@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { storage } from '../storage/instance'
 import { PROFILES, type Goal, type ProfileId, type Settings } from '../storage'
 import { ageYears, daysBetween } from '../engine/dates'
@@ -33,6 +33,7 @@ export default function Onboarding({
   const [dumbbells, setDumbbells] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const fileRef = useRef<HTMLInputElement>(null)
 
   const kg = parseFloat(weightKg)
   const target = parseFloat(targetKg)
@@ -101,6 +102,15 @@ export default function Onboarding({
     }
   }
 
+  async function restore(file: File) {
+    try {
+      await storage.importProfile(profileId, await file.text())
+      onDone()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Import failed.')
+    }
+  }
+
   return (
     <div className="mx-auto max-w-md space-y-5 px-4 pb-12 pt-6">
       <div className="flex items-center justify-between">
@@ -109,7 +119,7 @@ export default function Onboarding({
       </div>
 
       <Card className="space-y-4">
-        <Field label="Sex (for the calorie formula)">
+        <Field group label="Sex (for the calorie formula)">
           <div className="flex gap-2">
             {(['female', 'male'] as Sex[]).map((s) => (
               <button key={s} onClick={() => setSex(s)}
@@ -130,7 +140,7 @@ export default function Onboarding({
             <input inputMode="decimal" className={inputCls} value={weightKg} onChange={(e) => setWeightKg(e.target.value)} />
           </Field>
         </div>
-        <Field label="Daily life, not counting workouts">
+        <Field group label="Daily life, not counting workouts">
           <div className="space-y-2">
             {LEVELS.map((l) => (
               <button key={l.id} onClick={() => setLevel(l.id)}
@@ -166,7 +176,7 @@ export default function Onboarding({
 
       <Card className="space-y-4">
         <h2 className="font-semibold">Training</h2>
-        <Field label="Training days">
+        <Field group label="Training days">
           <div className="grid grid-cols-7 gap-1">
             {DAYS.map((d, i) => (
               <button key={d} onClick={() => toggleDay(i)}
@@ -218,6 +228,18 @@ export default function Onboarding({
       <button className={primaryBtn} disabled={!preview || saving} onClick={save}>
         {saving ? 'Saving…' : 'Save and start'}
       </button>
+      <div className="border-t border-slate-800 pt-4">
+        <p className="mb-2 text-sm text-slate-400">Already have a backup of {name}'s data?</p>
+        <button className={secondaryBtn} onClick={() => fileRef.current?.click()}>Restore from a backup file</button>
+        <input
+          ref={fileRef} type="file" accept="application/json,.json" className="hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0]
+            if (f) void restore(f)
+            e.target.value = ''
+          }}
+        />
+      </div>
     </div>
   )
 }
