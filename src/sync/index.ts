@@ -1,0 +1,5 @@
+export * from './types'
+export * from './config'
+export { GitHubSync } from './github'
+export { SyncManager } from './manager'
+export { syncProfile, sameDocument } from './syncProfile'
