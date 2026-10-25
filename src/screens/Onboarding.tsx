@@ -5,6 +5,8 @@ import { ageYears, daysBetween } from '../engine/dates'
 import { dailyTargets } from '../engine/targets'
 import type { ActivityLevel, Sex } from '../engine/types'
 import { formatDate, todayLocal } from '../util/today'
+import { syncManager } from '../sync/instance'
+import SyncForm from './SyncForm'
 import { Card, Field, inputCls, primaryBtn, secondaryBtn } from './ui'
 
 const LEVELS: { id: ActivityLevel; label: string }[] = [
@@ -34,6 +36,8 @@ export default function Onboarding({
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [attempted, setAttempted] = useState(false)
+  const [showGitHub, setShowGitHub] = useState(false)
+  const [restoreNote, setRestoreNote] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
   const kg = parseFloat(weightKg)
@@ -69,6 +73,18 @@ export default function Onboarding({
 
   const toggleDay = (d: number) =>
     setTrainingDays((cur) => (cur.includes(d) ? cur.filter((x) => x !== d) : [...cur, d].sort()))
+
+  // After connecting, a found profile appears by itself (storage reload). Otherwise say why not.
+  async function afterConnect() {
+    if (await storage.loadHeader(profileId)) return
+    const st = syncManager.getStatus()
+    setRestoreNote(
+      st.state === 'auth' ? 'GitHub did not accept that token.'
+      : st.state === 'error' ? (st.message ?? 'Sync error.')
+      : st.state === 'offline' ? 'You are offline. Connect to the internet and try again.'
+      : `Connected, but no saved data for ${name} was found in that repo yet. Fill in the form below to start.`,
+    )
+  }
 
   function goTo(field: string) {
     document.getElementById(field)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -251,7 +267,14 @@ export default function Onboarding({
         {saving ? 'Saving…' : 'Save and start'}
       </button>
       <div className="border-t border-slate-800 pt-4">
-        <p className="mb-2 text-sm text-slate-400">Already have a backup of {name}'s data?</p>
+        <p className="mb-2 text-sm text-slate-400">Already use this app on another device, or have a backup of {name}'s data?</p>
+        <button className={`${secondaryBtn} mb-2`} onClick={() => setShowGitHub((v) => !v)}>Restore from GitHub</button>
+        {showGitHub && (
+          <div className="mb-3 space-y-3 rounded-xl bg-slate-800 p-3">
+            <SyncForm tokenRequired submitLabel="Connect and restore" onSaved={() => void afterConnect()} />
+            {restoreNote && <p className="text-sm text-amber-200">{restoreNote}</p>}
+          </div>
+        )}
         <button className={secondaryBtn} onClick={() => fileRef.current?.click()}>Restore from a backup file</button>
         <input
           ref={fileRef} type="file" accept="application/json,.json" className="hidden"

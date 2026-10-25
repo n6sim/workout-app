@@ -26,6 +26,12 @@ export function useProfileData(profileId: ProfileId) {
     void reload()
   }, [reload])
 
+  // Also reload when sync applies a pulled copy.
+  useEffect(
+    () => storage.onChange((e) => e.profileId === profileId && void reload()),
+    [profileId, reload],
+  )
+
   return { data, reload }
 }
 
