@@ -33,6 +33,7 @@ export default function Onboarding({
   const [dumbbells, setDumbbells] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [attempted, setAttempted] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
   const kg = parseFloat(weightKg)
@@ -40,18 +41,19 @@ export default function Onboarding({
   const cm = parseFloat(heightCm)
 
   const problems = useMemo(() => {
-    const p: string[] = []
-    if (!sex) p.push('Choose sex (used for the calorie formula).')
+    const p: { field: string; text: string }[] = []
+    const add = (field: string, text: string) => p.push({ field, text })
+    if (!sex) add('f-sex', 'Choose sex (used for the calorie formula).')
     const age = birthDate ? ageYears(birthDate, today) : NaN
-    if (!(age >= 14 && age <= 100)) p.push('Enter a valid birth date.')
-    if (!(cm >= 120 && cm <= 230)) p.push('Height should be between 120 and 230 cm.')
-    if (!(kg >= 30 && kg <= 300)) p.push('Current weight should be between 30 and 300 kg.')
-    if (!level) p.push('Choose your daily-life activity.')
+    if (!(age >= 14 && age <= 100)) add('f-birth', 'Enter a valid birth date.')
+    if (!(cm >= 120 && cm <= 230)) add('f-height', 'Height should be between 120 and 230 cm.')
+    if (!(kg >= 30 && kg <= 300)) add('f-weight', 'Current weight should be between 30 and 300 kg.')
+    if (!level) add('f-level', 'Choose your daily-life activity.')
     if (goalType === 'lose') {
-      if (!(target >= 30 && target < kg)) p.push('Target weight must be below your current weight.')
-      if (!targetDate || daysBetween(today, targetDate) < 1) p.push('Pick a target date in the future.')
+      if (!(target >= 30 && target < kg)) add('f-target', 'Target weight must be below your current weight.')
+      if (!targetDate || daysBetween(today, targetDate) < 1) add('f-date', 'Pick a target date in the future.')
     }
-    if (trainingDays.length === 0) p.push('Pick at least one training day.')
+    if (trainingDays.length === 0) add('f-days', 'Pick at least one training day.')
     return p
   }, [sex, birthDate, cm, kg, level, goalType, target, targetDate, trainingDays, today])
 
@@ -68,8 +70,17 @@ export default function Onboarding({
   const toggleDay = (d: number) =>
     setTrainingDays((cur) => (cur.includes(d) ? cur.filter((x) => x !== d) : [...cur, d].sort()))
 
+  function goTo(field: string) {
+    document.getElementById(field)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+
   async function save() {
-    if (!preview || !sex || !level) return
+    if (!preview || !sex || !level) {
+      // Save stays tappable so a tap explains what is missing and jumps to it.
+      setAttempted(true)
+      if (problems[0]) goTo(problems[0].field)
+      return
+    }
     setSaving(true)
     setError('')
     try {
@@ -119,28 +130,28 @@ export default function Onboarding({
       </div>
 
       <Card className="space-y-4">
-        <Field group label="Sex (for the calorie formula)">
+        <Field group id="f-sex" label="Sex (for the calorie formula)">
           <div className="flex gap-2">
             {(['female', 'male'] as Sex[]).map((s) => (
-              <button key={s} onClick={() => setSex(s)}
+              <button key={s} type="button" aria-pressed={sex === s} onClick={() => setSex(s)}
                 className={`flex-1 rounded-lg py-3 capitalize ${sex === s ? 'bg-sky-500 font-semibold text-slate-950' : 'bg-slate-700'}`}>
                 {s}
               </button>
             ))}
           </div>
         </Field>
-        <Field label="Birth date">
+        <Field id="f-birth" label="Birth date">
           <input type="date" className={inputCls} value={birthDate} max={today} onChange={(e) => setBirthDate(e.target.value)} />
         </Field>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Height (cm)">
+          <Field id="f-height" label="Height (cm)">
             <input inputMode="decimal" className={inputCls} value={heightCm} onChange={(e) => setHeightCm(e.target.value)} />
           </Field>
-          <Field label="Current weight (kg)">
+          <Field id="f-weight" label="Current weight (kg)">
             <input inputMode="decimal" className={inputCls} value={weightKg} onChange={(e) => setWeightKg(e.target.value)} />
           </Field>
         </div>
-        <Field group label="Daily life, not counting workouts">
+        <Field group id="f-level" label="Daily life, not counting workouts">
           <div className="space-y-2">
             {LEVELS.map((l) => (
               <button key={l.id} onClick={() => setLevel(l.id)}
@@ -164,10 +175,10 @@ export default function Onboarding({
         </div>
         {goalType === 'lose' && (
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Target weight (kg)">
+            <Field id="f-target" label="Target weight (kg)">
               <input inputMode="decimal" className={inputCls} value={targetKg} onChange={(e) => setTargetKg(e.target.value)} />
             </Field>
-            <Field label="Target date">
+            <Field id="f-date" label="Target date">
               <input type="date" className={inputCls} value={targetDate} min={today} onChange={(e) => setTargetDate(e.target.value)} />
             </Field>
           </div>
@@ -176,7 +187,7 @@ export default function Onboarding({
 
       <Card className="space-y-4">
         <h2 className="font-semibold">Training</h2>
-        <Field group label="Training days">
+        <Field group id="f-days" label="Training days">
           <div className="grid grid-cols-7 gap-1">
             {DAYS.map((d, i) => (
               <button key={d} onClick={() => toggleDay(i)}
@@ -221,11 +232,22 @@ export default function Onboarding({
           )}
         </Card>
       ) : (
-        problems.length > 0 && <p className="text-sm text-slate-400">{problems[0]}</p>
+        problems.length > 0 && (
+          <div className={`rounded-xl p-3 text-sm ${attempted ? 'bg-amber-900/40 text-amber-100' : 'bg-slate-800 text-slate-300'}`}>
+            <p className="mb-1 font-medium">Still needed (tap to jump there):</p>
+            <ul className="space-y-1">
+              {problems.map((p) => (
+                <li key={p.field}>
+                  <button className="text-left underline" onClick={() => goTo(p.field)}>{p.text}</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
       )}
 
       {error && <p className="text-sm text-red-400">{error}</p>}
-      <button className={primaryBtn} disabled={!preview || saving} onClick={save}>
+      <button className={primaryBtn} disabled={saving} onClick={save}>
         {saving ? 'Saving…' : 'Save and start'}
       </button>
       <div className="border-t border-slate-800 pt-4">
