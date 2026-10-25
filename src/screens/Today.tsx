@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { storage } from '../storage/instance'
-import type { Phase, PhaseType, ProfileHeader, ProfileId, WeighIn } from '../storage'
+import type { Phase, PhaseType, PilatesLink, ProfileHeader, ProfileId, Session, WeighIn } from '../storage'
 import { dailyTargets } from '../engine/targets'
 import { latestWeighIn } from '../useProfileData'
 import { formatDate, todayLocal } from '../util/today'
+import PlanCard from './PlanCard'
 import { Card, Field, inputCls, primaryBtn, secondaryBtn } from './ui'
 
 const PHASE_LABEL: Record<PhaseType, string> = {
@@ -19,10 +20,13 @@ interface Props {
   header: ProfileHeader
   weighIns: WeighIn[]
   phases: Phase[]
+  sessions: Session[]
+  pilatesLinks: PilatesLink[]
   reload: () => void
+  onOpenSettings: () => void
 }
 
-export default function Today({ profileId, header, weighIns, phases, reload }: Props) {
+export default function Today({ profileId, header, weighIns, phases, sessions, pilatesLinks, reload, onOpenSettings }: Props) {
   const today = todayLocal()
   const latest = latestWeighIn(weighIns)
   const phase = phases.find((p) => p.endDate === null)
@@ -95,6 +99,11 @@ export default function Today({ profileId, header, weighIns, phases, reload }: P
           )}
         </>
       )}
+
+      <PlanCard
+        profileId={profileId} header={header} phases={phases} sessions={sessions} pilatesLinks={pilatesLinks}
+        today={today} reload={reload} onOpenSettings={onOpenSettings}
+      />
 
       <WeighInCard profileId={profileId} weighIns={weighIns} reload={reload} />
     </div>

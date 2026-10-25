@@ -9,6 +9,14 @@ import {
 
 export * from './types'
 export { SchemaError } from './migrate'
+export { mergeDocuments } from './merge'
+export { parseProfileDocument } from './validate'
+
+/** `local` = the user changed something here (needs syncing). `remote` = we applied a pulled copy. */
+export interface ChangeEvent {
+  profileId: ProfileId
+  source: 'local' | 'remote'
+}
 
 export type NewEntry<T extends EntryBase> = Omit<T, keyof EntryBase> & Partial<EntryBase>
 
@@ -21,6 +29,37 @@ export function createStorage(db: WorkoutDB = new WorkoutDB()) {
   // Table access is generic over the entry type; Dexie's per-table typing can't express that.
   const table = (t: EntryTable) => db[t] as unknown as import('dexie').Table<EntryBase & { profileId: ProfileId }, string>
   const now = () => new Date().toISOString()
+
+  const listeners = new Set<(e: ChangeEvent) => void>()
+  const emit = (profileId: ProfileId, source: ChangeEvent['source']) => listeners.forEach((cb) => cb({ profileId, source }))
+  function onChange(cb: (e: ChangeEvent) => void): () => void {
+    listeners.add(cb)
+    return () => listeners.delete(cb)
+  }
+
+  // Device-local key/value store (sync token, expiry, last-sync time, dirty flag).
+  // Never part of a profile document, so it can never reach an export or the synced file.
+  async function getMeta(key: string): Promise<string | null> {
+    return (await db.meta.get(key))?.value ?? null
+  }
+  async function setMeta(key: string, value: string): Promise<void> {
+    await db.meta.put({ key, value })
+  }
+  async function deleteMeta(key: string): Promise<void> {
+    await db.meta.delete(key)
+  }
+
+  /** Records that this device has changes the remote copy has not seen. */
+  async function markDirty(profileId: ProfileId): Promise<string> {
+    const value = now()
+    await setMeta(`dirty:${profileId}`, value)
+    return value
+  }
+  const getDirty = (profileId: ProfileId) => getMeta(`dirty:${profileId}`)
+  /** Clears the flag only if nothing changed since `seen`, so a change made during a push is not lost. */
+  async function clearDirty(profileId: ProfileId, seen: string | null): Promise<void> {
+    if ((await getDirty(profileId)) === seen) await deleteMeta(`dirty:${profileId}`)
+  }
 
   async function deviceId(): Promise<string> {
     const row = await db.meta.get('deviceId')
@@ -35,8 +74,13 @@ export function createStorage(db: WorkoutDB = new WorkoutDB()) {
     return row ? { profile: row.profile, settings: row.settings, goal: row.goal } : null
   }
 
+  const putHeader = (id: ProfileId, header: ProfileHeader) =>
+    db.headers.put({ id, schemaVersion: SCHEMA_VERSION, ...header })
+
   async function saveHeader(id: ProfileId, header: ProfileHeader): Promise<void> {
-    await db.headers.put({ id, schemaVersion: SCHEMA_VERSION, ...header })
+    await putHeader(id, header)
+    await markDirty(id)
+    emit(id, 'local')
   }
 
   async function saveEntry<K extends EntryTable>(
@@ -53,6 +97,8 @@ export function createStorage(db: WorkoutDB = new WorkoutDB()) {
       deviceId: await deviceId(),
     } as EntryMap[K]
     await table(t).put({ ...full, profileId })
+    await markDirty(profileId)
+    emit(profileId, 'local')
     return full
   }
 
@@ -71,6 +117,8 @@ export function createStorage(db: WorkoutDB = new WorkoutDB()) {
     const row = await table(t).get(id)
     if (!row || row.profileId !== profileId) return
     await table(t).put({ ...row, deleted: true, updatedAt: now(), deviceId: await deviceId() })
+    await markDirty(profileId)
+    emit(profileId, 'local')
   }
 
   async function exportProfile(profileId: ProfileId): Promise<ProfileDocument | null> {
@@ -83,7 +131,7 @@ export function createStorage(db: WorkoutDB = new WorkoutDB()) {
 
   async function writeDocument(profileId: ProfileId, doc: ProfileDocument): Promise<void> {
     await db.transaction('rw', [db.headers, ...ENTRY_TABLES.map((t) => db[t])], async () => {
-      await saveHeader(profileId, { profile: doc.profile, settings: doc.settings, goal: doc.goal })
+      await putHeader(profileId, { profile: doc.profile, settings: doc.settings, goal: doc.goal })
       for (const t of ENTRY_TABLES) {
         await table(t).bulkPut((doc[t] as EntryBase[]).map((e) => ({ ...e, profileId })))
       }
@@ -99,7 +147,15 @@ export function createStorage(db: WorkoutDB = new WorkoutDB()) {
     }
     const local = await exportProfile(profileId)
     await writeDocument(profileId, local ? mergeDocuments(local, incoming) : incoming)
+    await markDirty(profileId)
+    emit(profileId, 'local')
     return { profileId }
+  }
+
+  /** Stores a copy merged from the remote. Not a user change, so it does not mark the profile dirty. */
+  async function applyRemote(profileId: ProfileId, doc: ProfileDocument): Promise<void> {
+    await writeDocument(profileId, doc)
+    emit(profileId, 'remote')
   }
 
   /** Wipes one profile's data. Used by the round-trip test; not exposed in the UI. */
@@ -120,7 +176,8 @@ export function createStorage(db: WorkoutDB = new WorkoutDB()) {
 
   return {
     loadHeader, saveHeader, saveEntry, listEntries, deleteEntry,
-    exportProfile, importProfile, clearProfile, getLastProfile, setLastProfile,
+    exportProfile, importProfile, applyRemote, clearProfile, getLastProfile, setLastProfile,
+    onChange, getMeta, setMeta, deleteMeta, getDirty, clearDirty,
   }
 }
 

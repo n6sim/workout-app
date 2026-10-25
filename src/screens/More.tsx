@@ -9,9 +9,10 @@ interface Props {
   header: ProfileHeader
   onSwitch: () => void
   reload: () => void
+  onOpenSettings: () => void
 }
 
-export default function More({ profileId, header, onSwitch, reload }: Props) {
+export default function More({ profileId, header, onSwitch, reload, onOpenSettings }: Props) {
   const fileRef = useRef<HTMLInputElement>(null)
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null)
   const [persisted, setPersisted] = useState<boolean | null>(null)
@@ -51,6 +52,11 @@ export default function More({ profileId, header, onSwitch, reload }: Props) {
         <p className="text-sm text-slate-400">Profile</p>
         <p className="text-lg font-semibold">{header.profile.name}</p>
         <button className={secondaryBtn} onClick={onSwitch}>Switch profile</button>
+      </Card>
+
+      <Card className="space-y-3">
+        <h2 className="font-semibold">Settings</h2>
+        <button className={secondaryBtn} onClick={onOpenSettings}>Sync and settings</button>
       </Card>
 
       <Card className="space-y-3">

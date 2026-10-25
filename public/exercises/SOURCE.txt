@@ -1,0 +1,3 @@
+Exercise data and images: free-exercise-db, https://github.com/yuhonas/free-exercise-db
+License: The Unlicense (public domain). See LICENSE.md in that repo.
+Images resized to 400 px wide WebP.
