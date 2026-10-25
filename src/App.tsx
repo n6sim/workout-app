@@ -9,6 +9,10 @@ import More from './screens/More'
 import Settings from './screens/Settings'
 import Week from './screens/Week'
 import LogTab from './screens/LogTab'
+import Progress from './screens/Progress'
+import { runAdaptiveIfDue } from './domain/coachActions'
+import { todayInfo } from './domain/todayInfo'
+import { todayLocal } from './util/today'
 import Pantry from './screens/Pantry'
 import type { LogView } from './screens/Today'
 import { ensurePantry } from './domain/pantry'
@@ -17,7 +21,7 @@ import TokenScreen from './screens/TokenScreen'
 import { syncManager } from './sync/instance'
 import { useSyncStatus } from './useSync'
 
-type Tab = 'today' | 'week' | 'log' | 'more' | 'settings' | 'pantry'
+type Tab = 'today' | 'week' | 'log' | 'progress' | 'more' | 'settings' | 'pantry'
 
 export default function App() {
   const [profileId, setProfileId] = useState<ProfileId | null>(null)
@@ -61,6 +65,16 @@ function ProfileApp({ profileId, onSwitch }: { profileId: ProfileId; onSwitch: (
     if (hasProfile) void ensurePantry(profileId)
   }, [hasProfile, profileId])
 
+  // Every Monday: re-estimate your maintenance from your own logs and weight (spec rule 8). Once per Monday.
+  const adaptiveKey = data?.header ? `${data.events.length}:${data.weighIns.length}:${data.pauses.length}` : ''
+  useEffect(() => {
+    if (!data?.header) return
+    const today = todayLocal()
+    const { coach } = todayInfo({ profileId, header: data.header, data, today })
+    void runAdaptiveIfDue(profileId, data.header, data, coach, today).then((wrote) => { if (wrote) void reload() })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [adaptiveKey])
+
   // Ask again the next time GitHub rejects the token.
   useEffect(() => {
     if (status.state !== 'auth') setTokenDismissed(false)
@@ -81,6 +95,7 @@ function ProfileApp({ profileId, onSwitch }: { profileId: ProfileId; onSwitch: (
         )}
         {tab === 'week' && <Week profileId={profileId} header={data.header} data={data} reload={reload} onOpenSettings={() => setTab('settings')} />}
         {tab === 'log' && <LogTab profileId={profileId} data={data} view={logView} setView={setLogView} reload={reload} onSaved={() => setTab('today')} />}
+        {tab === 'progress' && <Progress profileId={profileId} header={data.header} data={data} />}
         {tab === 'more' && (
           <More
             profileId={profileId} header={data.header} onSwitch={onSwitch} reload={reload}
@@ -88,13 +103,13 @@ function ProfileApp({ profileId, onSwitch }: { profileId: ProfileId; onSwitch: (
           />
         )}
         {tab === 'settings' && (
-          <Settings profileId={profileId} header={data.header} pilatesLinks={data.pilatesLinks} reload={reload} onBack={() => setTab('more')} />
+          <Settings profileId={profileId} header={data.header} pilatesLinks={data.pilatesLinks} data={data} reload={reload} onBack={() => setTab('more')} />
         )}
         {tab === 'pantry' && <Pantry profileId={profileId} foods={data.foods} savedMeals={data.savedMeals} reload={reload} onBack={() => setTab('more')} />}
       </main>
       <nav className="fixed inset-x-0 bottom-0 border-t border-slate-800 bg-slate-900 pb-[env(safe-area-inset-bottom)]">
         <div className="mx-auto flex max-w-md">
-          {(['today', 'week', 'log', 'more'] as const).map((t) => (
+          {(['today', 'week', 'log', 'progress', 'more'] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}

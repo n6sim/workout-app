@@ -19,6 +19,7 @@ interface Props {
   pilatesLinks: PilatesLink[]
   activities: Activity[]
   weightKg: number | null
+  fewerSets?: boolean
   today: string
   reload: () => void
   onOpenSettings: () => void
@@ -26,7 +27,7 @@ interface Props {
 
 const summary = (s: Session): SessionSummary => ({ date: s.date, status: s.status, plan: { focus: s.plan.focus, kind: s.plan.kind } })
 
-export default function PlanCard({ profileId, header, phases, sessions, pilatesLinks, activities, weightKg, today, reload, onOpenSettings }: Props) {
+export default function PlanCard({ profileId, header, phases, sessions, pilatesLinks, activities, weightKg, fewerSets, today, reload, onOpenSettings }: Props) {
   const { settings } = header
   const phase = phases.find((p) => p.endDate === null)?.type ?? 'fat_loss'
   const focusKey = `focus:${profileId}:${today}`
@@ -44,9 +45,9 @@ export default function PlanCard({ profileId, header, phases, sessions, pilatesL
   const day = useMemo(
     () => planDay({
       date: today, trainingDays: settings.trainingDays, phase, sessionLengthMin: settings.sessionLengthMin,
-      library, sessions: summaries, focusOverride,
+      library, sessions: summaries, focusOverride, fewerSets,
     }),
-    [today, settings.trainingDays, settings.sessionLengthMin, phase, library, summaries, focusOverride],
+    [today, settings.trainingDays, settings.sessionLengthMin, phase, library, summaries, focusOverride, fewerSets],
   )
 
   const todays = sessions.filter((s) => s.date === today).sort((a, b) => b.createdAt.localeCompare(a.createdAt))
@@ -190,6 +191,7 @@ export default function PlanCard({ profileId, header, phases, sessions, pilatesL
       </div>
 
       {burnLine}
+      {fewerSets && strength && <p className="rounded-lg bg-emerald-900/40 p-2 text-xs text-emerald-100">A lighter session while you ease back in: one set fewer on each exercise.</p>}
       {strength && (
         <>
           <div className="flex flex-wrap items-center gap-2">

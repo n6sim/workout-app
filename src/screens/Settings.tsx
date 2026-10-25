@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { PilatesLink, ProfileHeader, ProfileId } from '../storage'
 import { storage } from '../storage/instance'
 import { clearSyncToken } from '../sync'
@@ -6,6 +6,11 @@ import { syncManager } from '../sync/instance'
 import { formatAgo } from '../util/ago'
 import { useNow, useSyncForm, useSyncStatus } from '../useSync'
 import CreditSettings from './CreditSettings'
+import GoalSettings from './GoalSettings'
+import ModeAndPauseSettings from './ModeAndPauseSettings'
+import { todayInfo } from '../domain/todayInfo'
+import type { ProfileData } from '../useProfileData'
+import { todayLocal } from '../util/today'
 import PilatesLinksSettings from './PilatesLinksSettings'
 import SyncForm from './SyncForm'
 import TrainingSettings from './TrainingSettings'
@@ -15,11 +20,13 @@ interface Props {
   profileId: ProfileId
   header: ProfileHeader
   pilatesLinks: PilatesLink[]
+  data: ProfileData
   reload: () => void
   onBack: () => void
 }
 
-export default function Settings({ profileId, header, pilatesLinks, reload, onBack }: Props) {
+export default function Settings({ profileId, header, pilatesLinks, data, reload, onBack }: Props) {
+  const info = useMemo(() => todayInfo({ profileId, header, data, today: todayLocal() }), [profileId, header, data])
   const status = useSyncStatus()
   const now = useNow()
   const [version, setVersion] = useState(0)
@@ -48,6 +55,8 @@ export default function Settings({ profileId, header, pilatesLinks, reload, onBa
         <h1 className="text-2xl font-semibold">Settings</h1>
       </div>
 
+      <GoalSettings profileId={profileId} header={header} data={data} reload={reload} />
+      <ModeAndPauseSettings profileId={profileId} info={info} reload={reload} />
       <TrainingSettings profileId={profileId} header={header} reload={reload} />
       <CreditSettings profileId={profileId} header={header} reload={reload} />
       <PilatesLinksSettings profileId={profileId} links={pilatesLinks} reload={reload} />

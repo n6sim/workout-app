@@ -2,7 +2,7 @@
 
 Personal coach PWA for two profiles (Nasim, Kash). Spec: [docs/SPEC.md](docs/SPEC.md). Project rules: [CLAUDE.md](CLAUDE.md).
 
-Status: **M1** (skeleton, profiles, targets), **M2** (GitHub sync), **M3** (workouts) and **M4** (nutrition and weekly budget).
+Status: **M1** (skeleton, profiles, targets), **M2** (GitHub sync), **M3** (workouts) and **M4** (nutrition and weekly budget) and **M5** (coach brain). All five milestones are built.
 
 ## Develop
 
@@ -26,6 +26,8 @@ npm run build-seed-foods   # rebuild the starter pantry from data-source/cnf (of
 - `src/data/`: `exercises.json` and `public/exercises/` (imported from [free-exercise-db](https://github.com/yuhonas/free-exercise-db), public domain / Unlicense), plus 20 hand-written pilates and mobility moves in `handmade.ts`. Video links are left empty on purpose.
 - `data-source/cnf/`: the Canadian Nutrient File 2015 CSV files (Health Canada, Open Government Licence - Canada). `scripts/build-seed-foods.mjs` turns them into `src/data/seedFoods.json` (about 120 staples). Calories and protein are never typed by hand.
 - `src/engine/`: also exercise calories (`exercise.ts`), the weekly budget with flex day (`budget.ts`), the plain-words meal parser (`nutrition.ts`) and meal suggestions.
+- `src/engine/` also holds the coach: trend weight (`trend.ts`), adaptive maintenance (`adaptive.ts`), phase proposals and the plateau check (`coach.ts`), pause rules (`pause.ts`) and the moderate/aggressive mode config (`modes.ts`, aggressive is all `null` until v2).
+- `src/domain/`: glue between your saved data and the engine (coach state, today's numbers, pantry seeding).
 - `src/screens/`: UI.
 
 ## Deploy

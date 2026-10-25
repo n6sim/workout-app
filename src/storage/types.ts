@@ -58,6 +58,10 @@ export interface Phase extends EntryBase {
   reason: string
   calorieTargetKcal: number
   proteinTargetG: number
+  /** Diet break: the day it is due to end. */
+  plannedEndDate?: string
+  /** Diet break: the phase to go back to. */
+  previousType?: PhaseType
 }
 
 export interface WeighIn extends EntryBase {

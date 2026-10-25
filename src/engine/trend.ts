@@ -70,3 +70,14 @@ export function projectedDate(trendKg: number, targetKg: number, ratePerDay: num
   if (ratePerDay >= -0.005) return null // flat or going up: no honest date
   return addDays(today, Math.ceil((trendKg - targetKg) / -ratePerDay))
 }
+
+/** Trend change over a window ending `end` (end trend minus start trend), using the first and last trend values
+ *  available at each end. Null when the span is shorter than 14 days or there is no trend at an end. */
+export function trendChange(weighIns: WeighPoint[], end: string, days = 21, paused: ReadonlySet<string> = new Set()): { kg: number; days: number } | null {
+  const start = addDays(end, -days)
+  const first = firstTrend(weighIns, start, addDays(start, 6), paused)
+  const last = lastTrend(weighIns, addDays(end, -6), end, paused)
+  if (!first || !last) return null
+  const span = daysBetween(first.date, last.date)
+  return span >= 14 ? { kg: last.kg - first.kg, days: span } : null
+}

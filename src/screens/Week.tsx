@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { planWeek, DAY_TITLE, SUPPORTED_TRAINING_DAYS, weekStart } from '../engine/training/week'
 import type { ProfileHeader, ProfileId } from '../storage'
 import { setFlexDay } from '../domain/day'
-import { todayInfo } from '../domain/todayInfo'
+import { planStart, todayInfo } from '../domain/todayInfo'
 import type { ProfileData } from '../useProfileData'
 import { formatDate, todayLocal } from '../util/today'
 import { Card, primaryBtn, secondaryBtn } from './ui'
@@ -16,10 +16,8 @@ export default function Week({ profileId, header, data, reload, onOpenSettings }
   const { sessions } = data
   const days = header.settings.trainingDays
   const supported = (SUPPORTED_TRAINING_DAYS as readonly number[]).includes(new Set(days).size)
-  const info = useMemo(
-    () => todayInfo({ profileId, header, weighIns: data.weighIns, phases: data.phases, meals: data.meals, activities: data.activities, events: data.events, today }),
-    [profileId, header, data, today],
-  )
+  const info = useMemo(() => todayInfo({ profileId, header, data, today }), [profileId, header, data, today])
+  const pausedSet = info.coach.pausedSet
 
   if (!supported) {
     return (
@@ -33,10 +31,10 @@ export default function Week({ profileId, header, data, reload, onOpenSettings }
     )
   }
 
-  const startDate = header.goal.startDate
+  const startDate = planStart(data.phases, header)
   const week = planWeek(days, weekStart(today))
   // Days before you started the plan are not "missed"; they simply were not part of it.
-  const planned = week.filter((d) => d.kind !== 'rest' && d.date >= startDate)
+  const planned = week.filter((d) => d.kind !== 'rest' && d.date >= startDate && !pausedSet.has(d.date))
   const statusOf = (date: string) => {
     const list = sessions.filter((s) => s.date === date)
     if (list.some((s) => s.status === 'done')) return 'done'
@@ -90,7 +88,8 @@ export default function Week({ profileId, header, data, reload, onOpenSettings }
                   {st === 'done' && <span className="text-emerald-400">Done</span>}
                   {st === 'partial' && <span className="text-amber-300">Partly done</span>}
                   {before && d.kind !== 'rest' && !st && <span className="text-slate-600">Before you started</span>}
-                  {!before && !st && d.kind !== 'rest' && (d.date < today ? <span className="text-slate-500">Not done</span> : <span className="text-slate-400">{isToday ? 'Today' : 'Planned'}</span>)}
+                  {!before && !st && pausedSet.has(d.date) && <span className="text-sky-300">Paused</span>}
+                  {!before && !st && !pausedSet.has(d.date) && d.kind !== 'rest' && (d.date < today ? <span className="text-slate-500">Not done</span> : <span className="text-slate-400">{isToday ? 'Today' : 'Planned'}</span>)}
                 </span>
               </div>
               {d.date >= today && (

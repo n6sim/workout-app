@@ -9,10 +9,12 @@ import { suggestMeals } from '../engine/suggestions'
 import { MEAL_IDEAS } from '../data/mealIdeas'
 import { isLoggingDone, setLoggingDone } from '../domain/day'
 import { toInfo } from '../domain/pantry'
-import { todayInfo } from '../domain/todayInfo'
+import { planStart, todayInfo } from '../domain/todayInfo'
 import type { ProfileData } from '../useProfileData'
 import { formatDate, todayLocal } from '../util/today'
 import BudgetRing from './BudgetRing'
+import CoachCard from './CoachCard'
+import PauseSheet from './PauseSheet'
 import PlanCard from './PlanCard'
 import { Card, Field, inputCls, primaryBtn, secondaryBtn } from './ui'
 
@@ -34,13 +36,14 @@ interface Props {
 export default function Today({ profileId, header, data, reload, onOpenSettings, onQuickLog }: Props) {
   const today = todayLocal()
   const { weighIns, phases, sessions, pilatesLinks, meals, activities, foods, events } = data
-  const info = useMemo(
-    () => todayInfo({ profileId, header, weighIns, phases, meals, activities, events, today }),
-    [profileId, header, weighIns, phases, meals, activities, events, today],
-  )
-  const { latest, targets, budget } = info
-  const dayNumber = Math.max(1, daysBetween(header.goal.startDate, today) + 1)
-  const phase = phases.find((p) => p.endDate === null)
+  const info = useMemo(() => todayInfo({ profileId, header, data, today }), [profileId, header, data, today])
+  const { coach, weight, targets, budget } = info
+  const [pausing, setPausing] = useState(false)
+  const dayNumber = Math.max(1, daysBetween(planStart(phases, header), today) + 1)
+  const phase = coach.phase
+  // The first week back from a long break, or the first session after being sick: one set fewer.
+  const fewerSets = !!coach.returning && (coach.returning.oneFewerSet ||
+    (coach.returning.sick && !sessions.some((s) => s.date >= coach.returning!.backOn && (s.status === 'done' || s.status === 'partial'))))
   const done = isLoggingDone(events, profileId, today)
   const todaysMeals = meals.filter((m) => m.date === today).sort((a, b) => a.time.localeCompare(b.time))
   const todaysActivities = activities.filter((a) => a.date === today)
@@ -61,7 +64,9 @@ export default function Today({ profileId, header, data, reload, onOpenSettings,
         </div>
       </div>
 
-      {targets && budget && (
+      <CoachCard profileId={profileId} info={info} today={today} reload={reload} onWeighIn={() => onQuickLog('weight')} />
+
+      {targets && budget && weight && (
         <>
           <BudgetRing b={budget} target={targets.calorieTargetKcal} creditPct={creditPct} />
 
@@ -77,7 +82,11 @@ export default function Today({ profileId, header, data, reload, onOpenSettings,
           </Card>
 
           <p className="text-xs text-slate-500">
-            Daily target {targets.calorieTargetKcal} kcal and {targets.proteinTargetG} g protein, based on {latest!.kg} kg (weigh-in {formatDate(latest!.date)}).
+            Daily target {targets.calorieTargetKcal} kcal and {targets.proteinTargetG} g protein, based on {weight.kg} kg
+            {weight.fromTrend ? ' (your 7-day trend).' : ` (your latest weigh-in). Trend weight: Not enough weigh-ins yet. I need 3 in a week.`}
+          </p>
+          <p className="text-xs text-slate-500">
+            Maintenance {Math.round(targets.maintenanceKcal / 10) * 10} kcal{coach.maintenanceOverride ? ', adjusted from your own logs. It updates every Monday.' : ' from the formula. Once you log 14 days it adjusts to you.'}
           </p>
 
           {targets.goalTooFast && targets.moderateDate && (
@@ -96,11 +105,13 @@ export default function Today({ profileId, header, data, reload, onOpenSettings,
         ))}
       </div>
 
-      <PlanCard
-        profileId={profileId} header={header} phases={phases} sessions={sessions} pilatesLinks={pilatesLinks}
-        activities={activities} weightKg={latest?.kg ?? null}
-        today={today} reload={reload} onOpenSettings={onOpenSettings}
-      />
+      {!coach.paused && (
+        <PlanCard
+          profileId={profileId} header={header} phases={phases} sessions={sessions} pilatesLinks={pilatesLinks}
+          activities={activities} weightKg={weight?.kg ?? null} fewerSets={fewerSets}
+          today={today} reload={reload} onOpenSettings={onOpenSettings}
+        />
+      )}
 
       <Card className="space-y-2">
         <h2 className="font-semibold">Eaten today</h2>
@@ -124,17 +135,26 @@ export default function Today({ profileId, header, data, reload, onOpenSettings,
         )}
       </Card>
 
-      {targets && budget && !done && (
+      {targets && budget && !done && !coach.paused && (
         <Suggestions foods={foods} remainingKcal={budget.remaining} remainingProtein={targets.proteinTargetG - info.proteinEaten} proteinTarget={targets.proteinTargetG}
           profileId={profileId} reload={reload} today={today} />
       )}
 
-      <button className={done ? secondaryBtn : primaryBtn} onClick={async () => { await setLoggingDone(profileId, today, !done); reload() }}>
-        {done ? 'Logging is done for today (tap to undo)' : 'Done logging today'}
-      </button>
-      {done && <p className="text-center text-xs text-emerald-400">Thanks. Today counts as fully logged.</p>}
+      {!coach.paused && (
+        <button className={done ? secondaryBtn : primaryBtn} onClick={async () => { await setLoggingDone(profileId, today, !done); reload() }}>
+          {done ? 'Logging is done for today (tap to undo)' : 'Done logging today'}
+        </button>
+      )}
+      {done && !coach.paused && <p className="text-center text-xs text-emerald-400">Thanks. Today counts as fully logged.</p>}
 
       <WeighInCard profileId={profileId} weighIns={weighIns} reload={reload} />
+
+      {!coach.paused && (
+        <button className="w-full rounded-xl border border-slate-700 py-3 text-sm text-slate-300 active:bg-slate-800" onClick={() => setPausing(true)}>
+          Pause (holiday, sick or busy)
+        </button>
+      )}
+      {pausing && <PauseSheet profileId={profileId} onClose={() => setPausing(false)} onStarted={() => { setPausing(false); reload() }} />}
     </div>
   )
 }
