@@ -1,13 +1,24 @@
 import { useState } from 'react'
+import type { PilatesLink, ProfileHeader, ProfileId } from '../storage'
 import { storage } from '../storage/instance'
 import { clearSyncToken } from '../sync'
 import { syncManager } from '../sync/instance'
 import { formatAgo } from '../util/ago'
 import { useNow, useSyncForm, useSyncStatus } from '../useSync'
+import PilatesLinksSettings from './PilatesLinksSettings'
 import SyncForm from './SyncForm'
+import TrainingSettings from './TrainingSettings'
 import { Card, secondaryBtn } from './ui'
 
-export default function Settings({ onBack }: { onBack: () => void }) {
+interface Props {
+  profileId: ProfileId
+  header: ProfileHeader
+  pilatesLinks: PilatesLink[]
+  reload: () => void
+  onBack: () => void
+}
+
+export default function Settings({ profileId, header, pilatesLinks, reload, onBack }: Props) {
   const status = useSyncStatus()
   const now = useNow()
   const [version, setVersion] = useState(0)
@@ -35,6 +46,9 @@ export default function Settings({ onBack }: { onBack: () => void }) {
         <button onClick={onBack} className="text-sm text-slate-400 underline">Back</button>
         <h1 className="text-2xl font-semibold">Settings</h1>
       </div>
+
+      <TrainingSettings profileId={profileId} header={header} reload={reload} />
+      <PilatesLinksSettings profileId={profileId} links={pilatesLinks} reload={reload} />
 
       <Card className="space-y-3">
         <h2 className="font-semibold">Sync with GitHub</h2>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { suggestWeight, type LoggedExercise } from './progression'
+import { historyFor, suggestWeight, type LoggedExercise } from './progression'
 
 const o = { plannedSets: 3, repMin: 8, repMax: 12, dumbbellsKg: [4, 6, 8, 10] }
 const sess = (date: string, ...sets: [number, number][]): LoggedExercise => ({ date, sets: sets.map(([reps, weightKg]) => ({ reps, weightKg })) })
@@ -46,5 +46,25 @@ describe('double progression', () => {
   it('maintenance range 6 to 10', () => {
     const m = { ...o, repMin: 6, repMax: 10 }
     expect(suggestWeight([sess('d1', [10, 6], [10, 6])], { ...m, plannedSets: 2 }).kg).toBe(8)
+  })
+})
+
+describe('historyFor', () => {
+  const s = (date: string, status: 'done' | 'partial' | 'skipped', ...sets: [string, number, number][]) => ({
+    date, status, sets: sets.map(([exerciseId, reps, weightKg]) => ({ exerciseId, reps, weightKg })),
+  })
+  it('returns one exercise\'s logs, newest first, without skipped sessions', () => {
+    const h = historyFor('curl', [
+      s('2026-10-12', 'done', ['curl', 10, 6], ['press', 10, 8]),
+      s('2026-10-19', 'partial', ['curl', 12, 6]),
+      s('2026-10-16', 'skipped', ['curl', 1, 1]),
+      s('2026-10-14', 'done', ['press', 10, 8]),
+    ])
+    expect(h.map((x) => x.date)).toEqual(['2026-10-19', '2026-10-12'])
+    expect(h[1].sets).toEqual([{ exerciseId: 'curl', reps: 10, weightKg: 6 }])
+  })
+  it('feeds suggestWeight end to end', () => {
+    const h = historyFor('curl', [s('2026-10-12', 'done', ['curl', 12, 6], ['curl', 12, 6], ['curl', 12, 6])])
+    expect(suggestWeight(h, o).kg).toBe(8)
   })
 })

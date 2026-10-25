@@ -1,4 +1,5 @@
 import type { ActivityLevel, ModeName, Sex } from '../engine/types'
+import type { SessionPlan, SetRecord } from '../engine/training/types'
 
 /** Bump when the document shape changes and add a step to migrate.ts. */
 export const SCHEMA_VERSION = 1
@@ -89,18 +90,16 @@ export interface Activity extends EntryBase {
   creditedKcal: number
 }
 
-export interface SetLog {
-  exerciseId: string
-  setNo: number
-  reps?: number
-  seconds?: number
-  weightKg?: number
-}
 export interface Session extends EntryBase {
   date: string
-  plan: string
+  /** The plan as it was when the workout started (focus changes and swaps included). */
+  plan: SessionPlan
   status: 'done' | 'partial' | 'skipped'
-  sets: SetLog[]
+  sets: SetRecord[]
+  startedAt?: string
+  finishedAt?: string
+  /** Where to pick up if the app is closed mid-workout. */
+  stepIndex?: number
 }
 
 export interface Pause extends EntryBase {

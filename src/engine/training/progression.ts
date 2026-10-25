@@ -51,3 +51,19 @@ export function suggestWeight(history: LoggedExercise[], o: Options): WeightSugg
 
   return { kg: w, reason: `Stay at ${w} kg until every set reaches ${o.repMax} reps.` }
 }
+
+/** A stored session, as far as progression needs it. */
+export interface SessionLike {
+  date: string
+  status: 'done' | 'partial' | 'skipped'
+  sets: { exerciseId: string; reps?: number; weightKg?: number }[]
+}
+
+/** Past logs of one exercise, newest first. Skipped sessions and sessions without that exercise are ignored. */
+export function historyFor(exerciseId: string, sessions: SessionLike[]): LoggedExercise[] {
+  return sessions
+    .filter((s) => s.status !== 'skipped')
+    .map((s) => ({ date: s.date, sets: s.sets.filter((x) => x.exerciseId === exerciseId) }))
+    .filter((h) => h.sets.length > 0)
+    .sort((a, b) => b.date.localeCompare(a.date))
+}

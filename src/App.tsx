@@ -7,12 +7,13 @@ import Onboarding from './screens/Onboarding'
 import Today from './screens/Today'
 import More from './screens/More'
 import Settings from './screens/Settings'
+import Week from './screens/Week'
 import SyncHeader from './screens/SyncHeader'
 import TokenScreen from './screens/TokenScreen'
 import { syncManager } from './sync/instance'
 import { useSyncStatus } from './useSync'
 
-type Tab = 'today' | 'more' | 'settings'
+type Tab = 'today' | 'week' | 'more' | 'settings'
 
 export default function App() {
   const [profileId, setProfileId] = useState<ProfileId | null>(null)
@@ -62,16 +63,22 @@ function ProfileApp({ profileId, onSwitch }: { profileId: ProfileId; onSwitch: (
       <SyncHeader name={data.header.profile.name} onOpenSettings={() => setTab('settings')} />
       <main className="flex-1 overflow-y-auto px-4 pb-24 pt-4">
         {tab === 'today' && (
-          <Today profileId={profileId} header={data.header} weighIns={data.weighIns} phases={data.phases} reload={reload} />
+          <Today
+            profileId={profileId} header={data.header} weighIns={data.weighIns} phases={data.phases}
+            sessions={data.sessions} pilatesLinks={data.pilatesLinks} reload={reload} onOpenSettings={() => setTab('settings')}
+          />
         )}
+        {tab === 'week' && <Week header={data.header} sessions={data.sessions} onOpenSettings={() => setTab('settings')} />}
         {tab === 'more' && (
           <More profileId={profileId} header={data.header} onSwitch={onSwitch} reload={reload} onOpenSettings={() => setTab('settings')} />
         )}
-        {tab === 'settings' && <Settings onBack={() => setTab('more')} />}
+        {tab === 'settings' && (
+          <Settings profileId={profileId} header={data.header} pilatesLinks={data.pilatesLinks} reload={reload} onBack={() => setTab('more')} />
+        )}
       </main>
       <nav className="fixed inset-x-0 bottom-0 border-t border-slate-800 bg-slate-900 pb-[env(safe-area-inset-bottom)]">
         <div className="mx-auto flex max-w-md">
-          {(['today', 'more'] as const).map((t) => (
+          {(['today', 'week', 'more'] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}

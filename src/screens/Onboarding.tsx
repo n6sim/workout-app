@@ -57,7 +57,7 @@ export default function Onboarding({
       if (!(target >= 30 && target < kg)) add('f-target', 'Target weight must be below your current weight.')
       if (!targetDate || daysBetween(today, targetDate) < 1) add('f-date', 'Pick a target date in the future.')
     }
-    if (trainingDays.length === 0) add('f-days', 'Pick at least one training day.')
+    if (trainingDays.length < 3 || trainingDays.length > 5) add('f-days', 'Pick 3, 4 or 5 training days.')
     return p
   }, [sex, birthDate, cm, kg, level, goalType, target, targetDate, trainingDays, today])
 
@@ -203,7 +203,7 @@ export default function Onboarding({
 
       <Card className="space-y-4">
         <h2 className="font-semibold">Training</h2>
-        <Field group id="f-days" label="Training days">
+        <Field group id="f-days" label="Training days (pick 3, 4 or 5)">
           <div className="grid grid-cols-7 gap-1">
             {DAYS.map((d, i) => (
               <button key={d} onClick={() => toggleDay(i)}

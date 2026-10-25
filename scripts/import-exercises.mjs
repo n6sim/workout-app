@@ -2,7 +2,7 @@
 // Run: npm run import-exercises
 // Keeps strength moves that need only dumbbells or body weight, body-only stretches, and the cardio machines
 // this app supports. Images are shrunk to 400 px WebP and copied into public/exercises/ so the app works offline.
-import { mkdir, writeFile, access } from 'node:fs/promises'
+import { mkdir, writeFile, access, readdir, rm } from 'node:fs/promises'
 import sharp from 'sharp'
 
 const BASE = 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main'
@@ -82,6 +82,12 @@ for (const { e, kind, equipment } of keep) {
 }
 
 out.sort((a, b) => a.id.localeCompare(b.id))
+
+// Remove pictures of exercises that are no longer kept, so reruns stay reproducible.
+const wanted = new Set(out.map((x) => x.id))
+for (const d of await readdir(OUT_IMG, { withFileTypes: true })) {
+  if (d.isDirectory() && !wanted.has(d.name)) await rm(`${OUT_IMG}/${d.name}`, { recursive: true })
+}
 await writeFile(OUT_JSON, JSON.stringify(out, null, 1) + '\n')
 await writeFile(
   `${OUT_IMG}/SOURCE.txt`,
