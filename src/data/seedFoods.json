@@ -1,0 +1,1417 @@
+[
+ {
+  "id": "seed-130",
+  "cnfFoodId": 130,
+  "name": "Egg, boiled",
+  "aliases": [
+   "egg",
+   "boiled egg",
+   "hard boiled egg"
+  ],
+  "cnfDescription": "Egg, chicken, whole, cooked, boiled in shell, hard-cooked",
+  "kcalPer100g": 141,
+  "proteinPer100g": 11.8,
+  "gramsPerPiece": 50,
+  "gramsPerMl": 0.57
+ },
+ {
+  "id": "seed-125",
+  "cnfFoodId": 125,
+  "name": "Egg, raw",
+  "aliases": [
+   "raw egg"
+  ],
+  "cnfDescription": "Egg, chicken, whole, fresh or frozen, raw",
+  "kcalPer100g": 145,
+  "proteinPer100g": 11.8,
+  "gramsPerPiece": 52.68,
+  "gramsPerMl": 1.03
+ },
+ {
+  "id": "seed-129",
+  "cnfFoodId": 129,
+  "name": "Egg, fried",
+  "aliases": [
+   "fried egg"
+  ],
+  "cnfDescription": "Egg, chicken, whole, cooked, fried",
+  "kcalPer100g": 193,
+  "proteinPer100g": 12.87,
+  "gramsPerPiece": 46
+ },
+ {
+  "id": "seed-133",
+  "cnfFoodId": 133,
+  "name": "Egg, scrambled",
+  "aliases": [
+   "scrambled egg"
+  ],
+  "cnfDescription": "Egg, chicken, whole, cooked, scrambled or omelet",
+  "kcalPer100g": 153,
+  "proteinPer100g": 10.39,
+  "gramsPerPiece": 61,
+  "gramsPerMl": 0.93
+ },
+ {
+  "id": "seed-61",
+  "cnfFoodId": 61,
+  "name": "Milk, 2%",
+  "aliases": [
+   "milk",
+   "2% milk"
+  ],
+  "cnfDescription": "Milk, fluid, partly skimmed, 2% M.F.",
+  "kcalPer100g": 50,
+  "proteinPer100g": 3.3,
+  "gramsPerMl": 1.03
+ },
+ {
+  "id": "seed-63",
+  "cnfFoodId": 63,
+  "name": "Milk, 1%",
+  "aliases": [
+   "1% milk"
+  ],
+  "cnfDescription": "Milk, fluid, partly skimmed, 1% M.F.",
+  "kcalPer100g": 42,
+  "proteinPer100g": 3.37,
+  "gramsPerMl": 1.03
+ },
+ {
+  "id": "seed-114",
+  "cnfFoodId": 114,
+  "name": "Milk, skim",
+  "aliases": [
+   "skim milk"
+  ],
+  "cnfDescription": "Milk, fluid, skim",
+  "kcalPer100g": 34,
+  "proteinPer100g": 3.37,
+  "gramsPerMl": 1.04
+ },
+ {
+  "id": "seed-502776",
+  "cnfFoodId": 502776,
+  "name": "Greek yogurt, plain 2%",
+  "aliases": [
+   "greek yogurt",
+   "greek yoghurt"
+  ],
+  "cnfDescription": "Yogourt, Greek style, plain, 2% M.F.",
+  "kcalPer100g": 69,
+  "proteinPer100g": 9.71,
+  "gramsPerMl": 1.01
+ },
+ {
+  "id": "seed-502188",
+  "cnfFoodId": 502188,
+  "name": "Greek yogurt, plain fat free",
+  "aliases": [
+   "fat free greek yogurt"
+  ],
+  "cnfDescription": "Yogourt, Greek style, plain, fat free (0-0.5% M.F.)",
+  "kcalPer100g": 58,
+  "proteinPer100g": 10.53,
+  "gramsPerMl": 1.01
+ },
+ {
+  "id": "seed-502170",
+  "cnfFoodId": 502170,
+  "name": "Yogurt, plain",
+  "aliases": [
+   "yogurt",
+   "yoghurt",
+   "plain yogurt"
+  ],
+  "cnfDescription": "Yogourt, plain (2-3.9% M.F.)",
+  "kcalPer100g": 50,
+  "proteinPer100g": 4.6,
+  "gramsPerMl": 1.06
+ },
+ {
+  "id": "seed-120",
+  "cnfFoodId": 120,
+  "name": "Cottage cheese, 2%",
+  "aliases": [
+   "cottage cheese"
+  ],
+  "cnfDescription": "Cheese, cottage, (2% M.F.)",
+  "kcalPer100g": 81,
+  "proteinPer100g": 10.45,
+  "gramsPerMl": 0.96
+ },
+ {
+  "id": "seed-107",
+  "cnfFoodId": 107,
+  "name": "Cottage cheese, 1%",
+  "aliases": [],
+  "cnfDescription": "Cheese, cottage, (1% M.F.)",
+  "kcalPer100g": 72,
+  "proteinPer100g": 12.39,
+  "gramsPerMl": 0.96
+ },
+ {
+  "id": "seed-119",
+  "cnfFoodId": 119,
+  "name": "Cheddar cheese",
+  "aliases": [
+   "cheddar"
+  ],
+  "cnfDescription": "Cheese, cheddar",
+  "kcalPer100g": 406,
+  "proteinPer100g": 24.04,
+  "gramsPerMl": 0.56
+ },
+ {
+  "id": "seed-110",
+  "cnfFoodId": 110,
+  "name": "Mozzarella cheese",
+  "aliases": [
+   "mozzarella"
+  ],
+  "cnfDescription": "Cheese, mozzarella, (52% water, 22.5% M.F.)",
+  "kcalPer100g": 300,
+  "proteinPer100g": 22.17,
+  "gramsPerMl": 0.56
+ },
+ {
+  "id": "seed-108",
+  "cnfFoodId": 108,
+  "name": "Feta cheese",
+  "aliases": [
+   "feta"
+  ],
+  "cnfDescription": "Cheese, feta",
+  "kcalPer100g": 264,
+  "proteinPer100g": 14.21,
+  "gramsPerMl": 0.63
+ },
+ {
+  "id": "seed-40",
+  "cnfFoodId": 40,
+  "name": "Parmesan cheese",
+  "aliases": [
+   "parmesan"
+  ],
+  "cnfDescription": "Cheese, parmesan, hard",
+  "kcalPer100g": 392,
+  "proteinPer100g": 35.75,
+  "gramsPerMl": 0.42
+ },
+ {
+  "id": "seed-47",
+  "cnfFoodId": 47,
+  "name": "Swiss cheese",
+  "aliases": [
+   "swiss"
+  ],
+  "cnfDescription": "Cheese, swiss (emmental)",
+  "kcalPer100g": 380,
+  "proteinPer100g": 26.93,
+  "gramsPerMl": 0.56
+ },
+ {
+  "id": "seed-28",
+  "cnfFoodId": 28,
+  "name": "Cream cheese",
+  "aliases": [],
+  "cnfDescription": "Cheese, cream",
+  "kcalPer100g": 342,
+  "proteinPer100g": 5.93,
+  "gramsPerMl": 0.98
+ },
+ {
+  "id": "seed-118",
+  "cnfFoodId": 118,
+  "name": "Butter",
+  "aliases": [],
+  "cnfDescription": "Butter, regular",
+  "kcalPer100g": 717,
+  "proteinPer100g": 0.85,
+  "gramsPerMl": 0.96
+ },
+ {
+  "id": "seed-841",
+  "cnfFoodId": 841,
+  "name": "Chicken breast, raw",
+  "aliases": [],
+  "cnfDescription": "Chicken, broiler, breast, skinless, boneless, meat, raw",
+  "kcalPer100g": 120,
+  "proteinPer100g": 22.5
+ },
+ {
+  "id": "seed-502555",
+  "cnfFoodId": 502555,
+  "name": "Chicken breast, grilled",
+  "aliases": [],
+  "cnfDescription": "Chicken, broiler, breast, skinless, boneless, meat, grilled",
+  "kcalPer100g": 151,
+  "proteinPer100g": 30.54
+ },
+ {
+  "id": "seed-853",
+  "cnfFoodId": 853,
+  "name": "Chicken thigh, raw",
+  "aliases": [],
+  "cnfDescription": "Chicken, broiler, thigh, meat, raw",
+  "kcalPer100g": 121,
+  "proteinPer100g": 19.66
+ },
+ {
+  "id": "seed-854",
+  "cnfFoodId": 854,
+  "name": "Chicken thigh, roasted",
+  "aliases": [],
+  "cnfDescription": "Chicken, broiler, thigh, meat, roasted",
+  "kcalPer100g": 179,
+  "proteinPer100g": 24.76,
+  "gramsPerMl": 0.57
+ },
+ {
+  "id": "seed-2683",
+  "cnfFoodId": 2683,
+  "name": "Ground beef, lean, raw",
+  "aliases": [],
+  "cnfDescription": "Beef, ground, lean, raw",
+  "kcalPer100g": 207,
+  "proteinPer100g": 19.58
+ },
+ {
+  "id": "seed-2687",
+  "cnfFoodId": 2687,
+  "name": "Ground beef, lean, broiled",
+  "aliases": [
+   "ground beef"
+  ],
+  "cnfDescription": "Beef, ground, lean, broiled",
+  "kcalPer100g": 250,
+  "proteinPer100g": 25.93,
+  "gramsPerMl": 0.52
+ },
+ {
+  "id": "seed-6134",
+  "cnfFoodId": 6134,
+  "name": "Beef tenderloin steak, broiled",
+  "aliases": [
+   "steak",
+   "beef steak"
+  ],
+  "cnfDescription": "Beef, loin, tenderloin, steak, lean, cooked, broiled",
+  "kcalPer100g": 207,
+  "proteinPer100g": 32.74,
+  "gramsPerMl": 0.57
+ },
+ {
+  "id": "seed-5180",
+  "cnfFoodId": 5180,
+  "name": "Turkey breast, roasted",
+  "aliases": [
+   "turkey breast",
+   "turkey"
+  ],
+  "cnfDescription": "Turkey, tom, breast, meat, roasted",
+  "kcalPer100g": 160,
+  "proteinPer100g": 31.74,
+  "gramsPerMl": 0.57
+ },
+ {
+  "id": "seed-1780",
+  "cnfFoodId": 1780,
+  "name": "Pork loin, roasted",
+  "aliases": [
+   "pork loin",
+   "pork"
+  ],
+  "cnfDescription": "Pork, loin, whole, lean, roasted",
+  "kcalPer100g": 209,
+  "proteinPer100g": 28.62,
+  "gramsPerMl": 0.57
+ },
+ {
+  "id": "seed-5405",
+  "cnfFoodId": 5405,
+  "name": "Bacon, cooked",
+  "aliases": [
+   "bacon"
+  ],
+  "cnfDescription": "Pork, cured, bacon, cooked, baked",
+  "kcalPer100g": 548,
+  "proteinPer100g": 35.73,
+  "gramsPerPiece": 8.1,
+  "gramsPerSlice": 8.1
+ },
+ {
+  "id": "seed-1942",
+  "cnfFoodId": 1942,
+  "name": "Ham, extra lean, canned",
+  "aliases": [
+   "ham"
+  ],
+  "cnfDescription": "Ham, extra lean, canned",
+  "kcalPer100g": 120,
+  "proteinPer100g": 16.4,
+  "gramsPerMl": 0.59
+ },
+ {
+  "id": "seed-3182",
+  "cnfFoodId": 3182,
+  "name": "Salmon, farmed, raw",
+  "aliases": [],
+  "cnfDescription": "Fish, salmon, atlantic, farmed, raw",
+  "kcalPer100g": 208,
+  "proteinPer100g": 20.42
+ },
+ {
+  "id": "seed-3053",
+  "cnfFoodId": 3053,
+  "name": "Salmon, baked",
+  "aliases": [],
+  "cnfDescription": "Fish, salmon, sockeye (red), baked or broiled",
+  "kcalPer100g": 169,
+  "proteinPer100g": 25.4,
+  "gramsPerMl": 0.57
+ },
+ {
+  "id": "seed-3195",
+  "cnfFoodId": 3195,
+  "name": "Cod, baked",
+  "aliases": [
+   "cod"
+  ],
+  "cnfDescription": "Fish, cod (scrod), atlantic, baked or broiled",
+  "kcalPer100g": 105,
+  "proteinPer100g": 22.83,
+  "gramsPerMl": 0.57
+ },
+ {
+  "id": "seed-3212",
+  "cnfFoodId": 3212,
+  "name": "Shrimp, boiled",
+  "aliases": [
+   "shrimp"
+  ],
+  "cnfDescription": "Crustaceans, shrimp, mixed species, boiled or steamed",
+  "kcalPer100g": 119,
+  "proteinPer100g": 22.78,
+  "gramsPerMl": 0.61
+ },
+ {
+  "id": "seed-3131",
+  "cnfFoodId": 3131,
+  "name": "Tuna, canned in water",
+  "aliases": [
+   "tuna"
+  ],
+  "cnfDescription": "Fish, tuna, light, canned in water, drained, unsalted",
+  "kcalPer100g": 116,
+  "proteinPer100g": 25.51,
+  "gramsPerPiece": 165,
+  "gramsPerMl": 0.63
+ },
+ {
+  "id": "seed-3214",
+  "cnfFoodId": 3214,
+  "name": "Tuna, canned in oil",
+  "aliases": [],
+  "cnfDescription": "Fish, tuna, light, canned in oil, drained, unsalted",
+  "kcalPer100g": 198,
+  "proteinPer100g": 29.13,
+  "gramsPerMl": 0.62
+ },
+ {
+  "id": "seed-3203",
+  "cnfFoodId": 3203,
+  "name": "Sardines, canned in oil",
+  "aliases": [
+   "sardine"
+  ],
+  "cnfDescription": "Fish, sardine, Atlantic, canned in oil, drained solids with bone",
+  "kcalPer100g": 208,
+  "proteinPer100g": 24.62,
+  "gramsPerPiece": 12,
+  "gramsPerMl": 0.63
+ },
+ {
+  "id": "seed-4421",
+  "cnfFoodId": 4421,
+  "name": "Oats, rolled, dry",
+  "aliases": [
+   "oats",
+   "rolled oats",
+   "oatmeal"
+  ],
+  "cnfDescription": "Grains, oats",
+  "kcalPer100g": 389,
+  "proteinPer100g": 16.89,
+  "gramsPerMl": 0.66
+ },
+ {
+  "id": "seed-4523",
+  "cnfFoodId": 4523,
+  "name": "Rice, white, cooked",
+  "aliases": [
+   "rice",
+   "white rice"
+  ],
+  "cnfDescription": "Grains, rice, white, long-grain, regular, cooked",
+  "kcalPer100g": 130,
+  "proteinPer100g": 2.69,
+  "gramsPerMl": 0.67
+ },
+ {
+  "id": "seed-4497",
+  "cnfFoodId": 4497,
+  "name": "Rice, brown, cooked",
+  "aliases": [
+   "brown rice"
+  ],
+  "cnfDescription": "Grains, rice, brown, long-grain, cooked",
+  "kcalPer100g": 111,
+  "proteinPer100g": 2.58,
+  "gramsPerMl": 0.82
+ },
+ {
+  "id": "seed-4471",
+  "cnfFoodId": 4471,
+  "name": "Rice, white, dry",
+  "aliases": [
+   "dry rice",
+   "uncooked rice"
+  ],
+  "cnfDescription": "Grains, rice, white, long-grain, regular, dry",
+  "kcalPer100g": 365,
+  "proteinPer100g": 7.13,
+  "gramsPerMl": 0.78
+ },
+ {
+  "id": "seed-4496",
+  "cnfFoodId": 4496,
+  "name": "Rice, brown, dry",
+  "aliases": [],
+  "cnfDescription": "Grains, rice, brown, long-grain, dry",
+  "kcalPer100g": 370,
+  "proteinPer100g": 7.94,
+  "gramsPerMl": 0.78
+ },
+ {
+  "id": "seed-4464",
+  "cnfFoodId": 4464,
+  "name": "Pasta, spaghetti, cooked",
+  "aliases": [
+   "pasta",
+   "spaghetti"
+  ],
+  "cnfDescription": "Pasta, spaghetti, enriched, cooked",
+  "kcalPer100g": 158,
+  "proteinPer100g": 5.8,
+  "gramsPerMl": 0.59
+ },
+ {
+  "id": "seed-4517",
+  "cnfFoodId": 4517,
+  "name": "Pasta, whole wheat, cooked",
+  "aliases": [
+   "whole wheat pasta"
+  ],
+  "cnfDescription": "Pasta, spaghetti, whole-wheat, cooked",
+  "kcalPer100g": 124,
+  "proteinPer100g": 5.33,
+  "gramsPerMl": 0.59
+ },
+ {
+  "id": "seed-4515",
+  "cnfFoodId": 4515,
+  "name": "Pasta, spaghetti, dry",
+  "aliases": [
+   "dry pasta"
+  ],
+  "cnfDescription": "Pasta, spaghetti, enriched, dry",
+  "kcalPer100g": 371,
+  "proteinPer100g": 13.04
+ },
+ {
+  "id": "seed-5917",
+  "cnfFoodId": 5917,
+  "name": "Quinoa, cooked",
+  "aliases": [
+   "quinoa"
+  ],
+  "cnfDescription": "Grains, quinoa, cooked",
+  "kcalPer100g": 120,
+  "proteinPer100g": 4.4,
+  "gramsPerMl": 0.78
+ },
+ {
+  "id": "seed-4490",
+  "cnfFoodId": 4490,
+  "name": "Couscous, cooked",
+  "aliases": [
+   "couscous"
+  ],
+  "cnfDescription": "Grains, couscous, cooked",
+  "kcalPer100g": 112,
+  "proteinPer100g": 3.79,
+  "gramsPerMl": 0.66
+ },
+ {
+  "id": "seed-4065",
+  "cnfFoodId": 4065,
+  "name": "Bread, rye",
+  "aliases": [
+   "rye bread"
+  ],
+  "cnfDescription": "Bread, rye",
+  "kcalPer100g": 251,
+  "proteinPer100g": 9.04,
+  "gramsPerPiece": 27,
+  "gramsPerSlice": 27
+ },
+ {
+  "id": "seed-4067",
+  "cnfFoodId": 4067,
+  "name": "Bread, whole wheat",
+  "aliases": [
+   "whole wheat bread",
+   "brown bread"
+  ],
+  "cnfDescription": "Bread, whole wheat, commercial",
+  "kcalPer100g": 257,
+  "proteinPer100g": 10.7,
+  "gramsPerPiece": 36,
+  "gramsPerSlice": 36
+ },
+ {
+  "id": "seed-4066",
+  "cnfFoodId": 4066,
+  "name": "Bread, white",
+  "aliases": [
+   "white bread"
+  ],
+  "cnfDescription": "Bread, white, commercial",
+  "kcalPer100g": 261,
+  "proteinPer100g": 9.14,
+  "gramsPerPiece": 36,
+  "gramsPerSlice": 36,
+  "gramsPerMl": 0.19
+ },
+ {
+  "id": "seed-502484",
+  "cnfFoodId": 502484,
+  "name": "Tortilla, whole wheat",
+  "aliases": [
+   "tortilla",
+   "wrap"
+  ],
+  "cnfDescription": "Tortilla, ready-to-bake / fry, whole-wheat",
+  "kcalPer100g": 310,
+  "proteinPer100g": 9.76,
+  "gramsPerPiece": 41
+ },
+ {
+  "id": "seed-4049",
+  "cnfFoodId": 4049,
+  "name": "Tortilla, flour",
+  "aliases": [],
+  "cnfDescription": "Tortilla, ready-to-bake / fry, flour",
+  "kcalPer100g": 325,
+  "proteinPer100g": 8.7
+ },
+ {
+  "id": "seed-3390",
+  "cnfFoodId": 3390,
+  "name": "Chickpeas, boiled",
+  "aliases": [
+   "chickpea",
+   "garbanzo beans"
+  ],
+  "cnfDescription": "Chickpeas (garbanzo beans, bengal gram), boiled",
+  "kcalPer100g": 164,
+  "proteinPer100g": 8.86,
+  "gramsPerMl": 0.69
+ },
+ {
+  "id": "seed-3393",
+  "cnfFoodId": 3393,
+  "name": "Lentils, boiled",
+  "aliases": [
+   "lentil"
+  ],
+  "cnfDescription": "Lentils, boiled",
+  "kcalPer100g": 116,
+  "proteinPer100g": 9.02,
+  "gramsPerMl": 0.84
+ },
+ {
+  "id": "seed-3377",
+  "cnfFoodId": 3377,
+  "name": "Black beans, boiled",
+  "aliases": [
+   "black beans"
+  ],
+  "cnfDescription": "Beans, black, mature seeds, boiled",
+  "kcalPer100g": 132,
+  "proteinPer100g": 8.86,
+  "gramsPerMl": 0.73
+ },
+ {
+  "id": "seed-501584",
+  "cnfFoodId": 501584,
+  "name": "Kidney beans, boiled",
+  "aliases": [
+   "kidney beans"
+  ],
+  "cnfDescription": "Beans, kidney, all types, boiled",
+  "kcalPer100g": 127,
+  "proteinPer100g": 8.67,
+  "gramsPerMl": 0.75
+ },
+ {
+  "id": "seed-3404",
+  "cnfFoodId": 3404,
+  "name": "Tofu, firm",
+  "aliases": [
+   "tofu"
+  ],
+  "cnfDescription": "Tofu, regular, firm or extra firm, raw (prepared with calcium sulphate and magnesium chloride)",
+  "kcalPer100g": 70,
+  "proteinPer100g": 8.19,
+  "gramsPerPiece": 80.1,
+  "gramsPerMl": 1.07
+ },
+ {
+  "id": "seed-4870",
+  "cnfFoodId": 4870,
+  "name": "Hummus",
+  "aliases": [],
+  "cnfDescription": "Hummus, commercial",
+  "kcalPer100g": 166,
+  "proteinPer100g": 7.9,
+  "gramsPerMl": 1.04
+ },
+ {
+  "id": "seed-6289",
+  "cnfFoodId": 6289,
+  "name": "Peanut butter, natural",
+  "aliases": [
+   "peanut butter"
+  ],
+  "cnfDescription": "Peanut butter, natural",
+  "kcalPer100g": 585,
+  "proteinPer100g": 23.68,
+  "gramsPerMl": 1.05
+ },
+ {
+  "id": "seed-2534",
+  "cnfFoodId": 2534,
+  "name": "Almonds",
+  "aliases": [
+   "almond"
+  ],
+  "cnfDescription": "Nuts, almonds, dried, unblanched, unroasted",
+  "kcalPer100g": 579,
+  "proteinPer100g": 21.15,
+  "gramsPerMl": 0.4
+ },
+ {
+  "id": "seed-2590",
+  "cnfFoodId": 2590,
+  "name": "Walnuts",
+  "aliases": [
+   "walnut"
+  ],
+  "cnfDescription": "Nuts, walnuts, English or Persian, dried",
+  "kcalPer100g": 655,
+  "proteinPer100g": 15.23,
+  "gramsPerMl": 0.49
+ },
+ {
+  "id": "seed-5709",
+  "cnfFoodId": 5709,
+  "name": "Cashews, raw",
+  "aliases": [
+   "cashews",
+   "cashew"
+  ],
+  "cnfDescription": "Nuts, cashew nuts, raw",
+  "kcalPer100g": 553,
+  "proteinPer100g": 18.22,
+  "gramsPerMl": 0.55
+ },
+ {
+  "id": "seed-3396",
+  "cnfFoodId": 3396,
+  "name": "Peanuts, raw",
+  "aliases": [
+   "peanuts",
+   "peanut"
+  ],
+  "cnfDescription": "Peanuts, all types, raw",
+  "kcalPer100g": 568,
+  "proteinPer100g": 25.8,
+  "gramsPerMl": 0.62
+ },
+ {
+  "id": "seed-2644",
+  "cnfFoodId": 2644,
+  "name": "Pistachios",
+  "aliases": [
+   "pistachio"
+  ],
+  "cnfDescription": "Nuts, pistachio nuts, raw",
+  "kcalPer100g": 562,
+  "proteinPer100g": 20.27,
+  "gramsPerMl": 0.52
+ },
+ {
+  "id": "seed-2567",
+  "cnfFoodId": 2567,
+  "name": "Hazelnuts",
+  "aliases": [
+   "hazelnut"
+  ],
+  "cnfDescription": "Nuts, filberts or hazelnuts, dried",
+  "kcalPer100g": 629,
+  "proteinPer100g": 14.95,
+  "gramsPerMl": 0.49
+ },
+ {
+  "id": "seed-2511",
+  "cnfFoodId": 2511,
+  "name": "Chia seeds",
+  "aliases": [
+   "chia"
+  ],
+  "cnfDescription": "Seeds, chia seeds, dried",
+  "kcalPer100g": 486,
+  "proteinPer100g": 16.54,
+  "gramsPerMl": 0.72
+ },
+ {
+  "id": "seed-4528",
+  "cnfFoodId": 4528,
+  "name": "Flaxseed",
+  "aliases": [
+   "flax",
+   "flaxseeds"
+  ],
+  "cnfDescription": "Seeds, flaxseed (linseed), whole and ground",
+  "kcalPer100g": 534,
+  "proteinPer100g": 18.29,
+  "gramsPerMl": 0.71
+ },
+ {
+  "id": "seed-2526",
+  "cnfFoodId": 2526,
+  "name": "Sunflower seeds",
+  "aliases": [],
+  "cnfDescription": "Seeds, sunflower seed kernels, dried",
+  "kcalPer100g": 585,
+  "proteinPer100g": 20.78,
+  "gramsPerMl": 0.19
+ },
+ {
+  "id": "seed-501889",
+  "cnfFoodId": 501889,
+  "name": "Soy beverage",
+  "aliases": [
+   "soy milk"
+  ],
+  "cnfDescription": "Plant-based beverage, soy, enriched, with Omega-3 fatty acids added",
+  "kcalPer100g": 45,
+  "proteinPer100g": 2.88,
+  "gramsPerMl": 1.03
+ },
+ {
+  "id": "seed-422",
+  "cnfFoodId": 422,
+  "name": "Olive oil",
+  "aliases": [],
+  "cnfDescription": "Vegetable oil, olive",
+  "kcalPer100g": 885,
+  "proteinPer100g": 0,
+  "gramsPerMl": 0.91
+ },
+ {
+  "id": "seed-451",
+  "cnfFoodId": 451,
+  "name": "Canola oil",
+  "aliases": [],
+  "cnfDescription": "Vegetable oil, canola",
+  "kcalPer100g": 885,
+  "proteinPer100g": 0,
+  "gramsPerMl": 0.92
+ },
+ {
+  "id": "seed-5332",
+  "cnfFoodId": 5332,
+  "name": "Mayonnaise, reduced fat",
+  "aliases": [
+   "mayo",
+   "mayonnaise"
+  ],
+  "cnfDescription": "Salad dressing, mayonnaise, reduced fat",
+  "kcalPer100g": 238,
+  "proteinPer100g": 0.37,
+  "gramsPerMl": 1.06
+ },
+ {
+  "id": "seed-2494",
+  "cnfFoodId": 2494,
+  "name": "Ketchup",
+  "aliases": [],
+  "cnfDescription": "Tomato ketchup (catsup)",
+  "kcalPer100g": 101,
+  "proteinPer100g": 1.04,
+  "gramsPerMl": 1.01
+ },
+ {
+  "id": "seed-4970",
+  "cnfFoodId": 4970,
+  "name": "Mustard, yellow",
+  "aliases": [
+   "mustard"
+  ],
+  "cnfDescription": "Sauce, mustard, yellow, ready-to-serve",
+  "kcalPer100g": 60,
+  "proteinPer100g": 3.74,
+  "gramsPerMl": 1.05
+ },
+ {
+  "id": "seed-2363",
+  "cnfFoodId": 2363,
+  "name": "Cucumber",
+  "aliases": [],
+  "cnfDescription": "Cucumber, raw",
+  "kcalPer100g": 16,
+  "proteinPer100g": 0.65,
+  "gramsPerPiece": 301,
+  "gramsPerMl": 0.5
+ },
+ {
+  "id": "seed-2460",
+  "cnfFoodId": 2460,
+  "name": "Tomato",
+  "aliases": [],
+  "cnfDescription": "Tomato, red, ripe, raw, year round average",
+  "kcalPer100g": 18,
+  "proteinPer100g": 0.88,
+  "gramsPerPiece": 123,
+  "gramsPerMl": 0.76
+ },
+ {
+  "id": "seed-2116",
+  "cnfFoodId": 2116,
+  "name": "Lettuce, romaine",
+  "aliases": [
+   "romaine",
+   "lettuce"
+  ],
+  "cnfDescription": "Lettuce, cos or romaine",
+  "kcalPer100g": 17,
+  "proteinPer100g": 1.23,
+  "gramsPerMl": 0.24
+ },
+ {
+  "id": "seed-2398",
+  "cnfFoodId": 2398,
+  "name": "Lettuce, iceberg",
+  "aliases": [
+   "iceberg"
+  ],
+  "cnfDescription": "Lettuce, iceberg",
+  "kcalPer100g": 14,
+  "proteinPer100g": 0.9,
+  "gramsPerMl": 0.23
+ },
+ {
+  "id": "seed-2213",
+  "cnfFoodId": 2213,
+  "name": "Spinach, raw",
+  "aliases": [
+   "spinach"
+  ],
+  "cnfDescription": "Spinach, raw",
+  "kcalPer100g": 23,
+  "proteinPer100g": 2.86,
+  "gramsPerMl": 0.13
+ },
+ {
+  "id": "seed-2380",
+  "cnfFoodId": 2380,
+  "name": "Carrot",
+  "aliases": [],
+  "cnfDescription": "Carrot, raw",
+  "kcalPer100g": 41,
+  "proteinPer100g": 0.93,
+  "gramsPerPiece": 61,
+  "gramsPerMl": 0.54
+ },
+ {
+  "id": "seed-2374",
+  "cnfFoodId": 2374,
+  "name": "Broccoli, raw",
+  "aliases": [
+   "broccoli"
+  ],
+  "cnfDescription": "Broccoli, raw",
+  "kcalPer100g": 34,
+  "proteinPer100g": 2.82,
+  "gramsPerMl": 0.37
+ },
+ {
+  "id": "seed-2385",
+  "cnfFoodId": 2385,
+  "name": "Cauliflower, raw",
+  "aliases": [
+   "cauliflower"
+  ],
+  "cnfDescription": "Cauliflower, raw",
+  "kcalPer100g": 25,
+  "proteinPer100g": 1.92,
+  "gramsPerMl": 0.45
+ },
+ {
+  "id": "seed-2484",
+  "cnfFoodId": 2484,
+  "name": "Red bell pepper",
+  "aliases": [
+   "bell pepper",
+   "pepper"
+  ],
+  "cnfDescription": "Pepper, sweet, red, raw",
+  "kcalPer100g": 31,
+  "proteinPer100g": 0.99,
+  "gramsPerPiece": 119,
+  "gramsPerMl": 0.63
+ },
+ {
+  "id": "seed-2401",
+  "cnfFoodId": 2401,
+  "name": "Onion",
+  "aliases": [],
+  "cnfDescription": "Onion, raw",
+  "kcalPer100g": 40,
+  "proteinPer100g": 1.1,
+  "gramsPerPiece": 150,
+  "gramsPerMl": 0.68
+ },
+ {
+  "id": "seed-2394",
+  "cnfFoodId": 2394,
+  "name": "Garlic",
+  "aliases": [
+   "garlic clove"
+  ],
+  "cnfDescription": "Garlic, raw",
+  "kcalPer100g": 149,
+  "proteinPer100g": 6.36,
+  "gramsPerPiece": 3,
+  "gramsPerMl": 0.57
+ },
+ {
+  "id": "seed-2225",
+  "cnfFoodId": 2225,
+  "name": "Zucchini",
+  "aliases": [],
+  "cnfDescription": "Squash, summer, zucchini, raw",
+  "kcalPer100g": 17,
+  "proteinPer100g": 1.21,
+  "gramsPerPiece": 196,
+  "gramsPerMl": 0.52
+ },
+ {
+  "id": "seed-2399",
+  "cnfFoodId": 2399,
+  "name": "Mushrooms, white",
+  "aliases": [
+   "mushroom"
+  ],
+  "cnfDescription": "Mushroom, white, raw",
+  "kcalPer100g": 22,
+  "proteinPer100g": 3.09,
+  "gramsPerPiece": 18,
+  "gramsPerMl": 0.3
+ },
+ {
+  "id": "seed-2361",
+  "cnfFoodId": 2361,
+  "name": "Cabbage",
+  "aliases": [],
+  "cnfDescription": "Cabbage, raw",
+  "kcalPer100g": 25,
+  "proteinPer100g": 1.28,
+  "gramsPerMl": 0.38
+ },
+ {
+  "id": "seed-2506",
+  "cnfFoodId": 2506,
+  "name": "Potato, boiled",
+  "aliases": [
+   "potato"
+  ],
+  "cnfDescription": "Potato, boiled, flesh and skin",
+  "kcalPer100g": 86,
+  "proteinPer100g": 1.96,
+  "gramsPerPiece": 150,
+  "gramsPerMl": 0.66
+ },
+ {
+  "id": "seed-2478",
+  "cnfFoodId": 2478,
+  "name": "Potato, baked",
+  "aliases": [
+   "baked potato"
+  ],
+  "cnfDescription": "Potato, flesh and skin, baked",
+  "kcalPer100g": 93,
+  "proteinPer100g": 2.5,
+  "gramsPerMl": 0.54
+ },
+ {
+  "id": "seed-2240",
+  "cnfFoodId": 2240,
+  "name": "Sweet potato, raw",
+  "aliases": [
+   "sweet potato"
+  ],
+  "cnfDescription": "Sweet potato, raw",
+  "kcalPer100g": 86,
+  "proteinPer100g": 1.57,
+  "gramsPerPiece": 130,
+  "gramsPerMl": 0.56
+ },
+ {
+  "id": "seed-2388",
+  "cnfFoodId": 2388,
+  "name": "Corn, sweet, raw",
+  "aliases": [
+   "corn"
+  ],
+  "cnfDescription": "Corn, sweet, yellow, raw",
+  "kcalPer100g": 86,
+  "proteinPer100g": 3.27,
+  "gramsPerMl": 0.65
+ },
+ {
+  "id": "seed-2410",
+  "cnfFoodId": 2410,
+  "name": "Green peas, boiled",
+  "aliases": [
+   "peas",
+   "green peas"
+  ],
+  "cnfDescription": "Peas, green, boiled, drained",
+  "kcalPer100g": 84,
+  "proteinPer100g": 5.36,
+  "gramsPerMl": 0.68
+ },
+ {
+  "id": "seed-2371",
+  "cnfFoodId": 2371,
+  "name": "Green beans, boiled",
+  "aliases": [
+   "green beans"
+  ],
+  "cnfDescription": "Beans, snap (Italian, green or yellow), boiled, drained",
+  "kcalPer100g": 35,
+  "proteinPer100g": 1.89,
+  "gramsPerMl": 0.53
+ },
+ {
+  "id": "seed-2386",
+  "cnfFoodId": 2386,
+  "name": "Celery",
+  "aliases": [],
+  "cnfDescription": "Celery, raw",
+  "kcalPer100g": 16,
+  "proteinPer100g": 0.69,
+  "gramsPerPiece": 40,
+  "gramsPerMl": 0.51
+ },
+ {
+  "id": "seed-1511",
+  "cnfFoodId": 1511,
+  "name": "Avocado",
+  "aliases": [],
+  "cnfDescription": "Avocado, raw, all commercial varieties",
+  "kcalPer100g": 160,
+  "proteinPer100g": 2,
+  "gramsPerPiece": 201,
+  "gramsPerMl": 0.63
+ },
+ {
+  "id": "seed-2089",
+  "cnfFoodId": 2089,
+  "name": "Eggplant, boiled",
+  "aliases": [
+   "eggplant"
+  ],
+  "cnfDescription": "Eggplant (aubergine, brinjal), boiled, drained",
+  "kcalPer100g": 35,
+  "proteinPer100g": 0.83,
+  "gramsPerMl": 0.42
+ },
+ {
+  "id": "seed-5391",
+  "cnfFoodId": 5391,
+  "name": "Olives, green",
+  "aliases": [
+   "olive",
+   "olives"
+  ],
+  "cnfDescription": "Olive, pickled, canned or bottled, green",
+  "kcalPer100g": 146,
+  "proteinPer100g": 1.03,
+  "gramsPerPiece": 4,
+  "gramsPerMl": 0.62
+ },
+ {
+  "id": "seed-1696",
+  "cnfFoodId": 1696,
+  "name": "Apple",
+  "aliases": [],
+  "cnfDescription": "Apple, raw, with skin",
+  "kcalPer100g": 52,
+  "proteinPer100g": 0.26,
+  "gramsPerPiece": 182,
+  "gramsPerMl": 0.53
+ },
+ {
+  "id": "seed-1704",
+  "cnfFoodId": 1704,
+  "name": "Banana",
+  "aliases": [],
+  "cnfDescription": "Banana, raw",
+  "kcalPer100g": 89,
+  "proteinPer100g": 1.09,
+  "gramsPerPiece": 118,
+  "gramsPerMl": 0.95
+ },
+ {
+  "id": "seed-1616",
+  "cnfFoodId": 1616,
+  "name": "Orange",
+  "aliases": [],
+  "cnfDescription": "Orange, california, navel, raw",
+  "kcalPer100g": 49,
+  "proteinPer100g": 0.91,
+  "gramsPerPiece": 140,
+  "gramsPerMl": 0.7
+ },
+ {
+  "id": "seed-1749",
+  "cnfFoodId": 1749,
+  "name": "Strawberries",
+  "aliases": [
+   "strawberry"
+  ],
+  "cnfDescription": "Strawberry, raw",
+  "kcalPer100g": 33,
+  "proteinPer100g": 0.67,
+  "gramsPerPiece": 12,
+  "gramsPerMl": 0.64
+ },
+ {
+  "id": "seed-1705",
+  "cnfFoodId": 1705,
+  "name": "Blueberries",
+  "aliases": [
+   "blueberry"
+  ],
+  "cnfDescription": "Blueberry, raw",
+  "kcalPer100g": 57,
+  "proteinPer100g": 0.74,
+  "gramsPerMl": 0.61
+ },
+ {
+  "id": "seed-1573",
+  "cnfFoodId": 1573,
+  "name": "Grapes",
+  "aliases": [
+   "grape"
+  ],
+  "cnfDescription": "Grape, North American type (slip skin), raw",
+  "kcalPer100g": 67,
+  "proteinPer100g": 0.63,
+  "gramsPerMl": 0.39
+ },
+ {
+  "id": "seed-1603",
+  "cnfFoodId": 1603,
+  "name": "Mango",
+  "aliases": [],
+  "cnfDescription": "Mango, raw",
+  "kcalPer100g": 60,
+  "proteinPer100g": 0.82,
+  "gramsPerPiece": 207,
+  "gramsPerMl": 0.7
+ },
+ {
+  "id": "seed-1734",
+  "cnfFoodId": 1734,
+  "name": "Pineapple",
+  "aliases": [],
+  "cnfDescription": "Pineapple, raw",
+  "kcalPer100g": 50,
+  "proteinPer100g": 0.54,
+  "gramsPerSlice": 84,
+  "gramsPerMl": 0.7
+ },
+ {
+  "id": "seed-1731",
+  "cnfFoodId": 1731,
+  "name": "Pear",
+  "aliases": [],
+  "cnfDescription": "Pear, raw, with skin",
+  "kcalPer100g": 57,
+  "proteinPer100g": 0.36,
+  "gramsPerPiece": 178,
+  "gramsPerMl": 0.68
+ },
+ {
+  "id": "seed-1728",
+  "cnfFoodId": 1728,
+  "name": "Peach",
+  "aliases": [],
+  "cnfDescription": "Peach, raw",
+  "kcalPer100g": 39,
+  "proteinPer100g": 0.91,
+  "gramsPerPiece": 150,
+  "gramsPerMl": 0.65
+ },
+ {
+  "id": "seed-1691",
+  "cnfFoodId": 1691,
+  "name": "Watermelon",
+  "aliases": [],
+  "cnfDescription": "Watermelon, raw",
+  "kcalPer100g": 30,
+  "proteinPer100g": 0.61,
+  "gramsPerMl": 0.64
+ },
+ {
+  "id": "seed-1585",
+  "cnfFoodId": 1585,
+  "name": "Kiwi",
+  "aliases": [],
+  "cnfDescription": "Kiwi fruit, raw",
+  "kcalPer100g": 61,
+  "proteinPer100g": 1.14,
+  "gramsPerPiece": 69,
+  "gramsPerMl": 0.76
+ },
+ {
+  "id": "seed-5401",
+  "cnfFoodId": 5401,
+  "name": "Dates, medjool",
+  "aliases": [
+   "date",
+   "dates"
+  ],
+  "cnfDescription": "Date, medjool",
+  "kcalPer100g": 277,
+  "proteinPer100g": 1.81,
+  "gramsPerPiece": 24
+ },
+ {
+  "id": "seed-1745",
+  "cnfFoodId": 1745,
+  "name": "Raisins",
+  "aliases": [
+   "raisin"
+  ],
+  "cnfDescription": "Raisin, seedless (sultana)",
+  "kcalPer100g": 299,
+  "proteinPer100g": 3.07,
+  "gramsPerMl": 0.7
+ },
+ {
+  "id": "seed-1589",
+  "cnfFoodId": 1589,
+  "name": "Lemon juice",
+  "aliases": [],
+  "cnfDescription": "Lemon juice, raw",
+  "kcalPer100g": 22,
+  "proteinPer100g": 0.35,
+  "gramsPerMl": 1.03
+ },
+ {
+  "id": "seed-4318",
+  "cnfFoodId": 4318,
+  "name": "Sugar, white",
+  "aliases": [
+   "sugar"
+  ],
+  "cnfDescription": "Sweets, sugars, granulated",
+  "kcalPer100g": 387,
+  "proteinPer100g": 0,
+  "gramsPerMl": 0.85
+ },
+ {
+  "id": "seed-4317",
+  "cnfFoodId": 4317,
+  "name": "Sugar, brown",
+  "aliases": [
+   "brown sugar"
+  ],
+  "cnfDescription": "Sweets, sugar, brown",
+  "kcalPer100g": 380,
+  "proteinPer100g": 0.12,
+  "gramsPerMl": 0.93
+ },
+ {
+  "id": "seed-4295",
+  "cnfFoodId": 4295,
+  "name": "Jam",
+  "aliases": [],
+  "cnfDescription": "Sweets, jams and preserves",
+  "kcalPer100g": 278,
+  "proteinPer100g": 0.37,
+  "gramsPerMl": 1.35
+ },
+ {
+  "id": "seed-501895",
+  "cnfFoodId": 501895,
+  "name": "Dark chocolate, 70-85%",
+  "aliases": [
+   "dark chocolate"
+  ],
+  "cnfDescription": "Candies, chocolate, dark, 70-85% cacao solids",
+  "kcalPer100g": 599,
+  "proteinPer100g": 7.79
+ },
+ {
+  "id": "seed-1619",
+  "cnfFoodId": 1619,
+  "name": "Orange juice",
+  "aliases": [],
+  "cnfDescription": "Orange juice, raw",
+  "kcalPer100g": 45,
+  "proteinPer100g": 0.7,
+  "gramsPerMl": 1.05
+ },
+ {
+  "id": "seed-2873",
+  "cnfFoodId": 2873,
+  "name": "Coffee, black",
+  "aliases": [
+   "coffee"
+  ],
+  "cnfDescription": "Coffee, brewed, prepared with tap water",
+  "kcalPer100g": 0,
+  "proteinPer100g": 0.12,
+  "gramsPerMl": 1
+ },
+ {
+  "id": "seed-2909",
+  "cnfFoodId": 2909,
+  "name": "Tea, brewed",
+  "aliases": [
+   "tea"
+  ],
+  "cnfDescription": "Tea, brewed",
+  "kcalPer100g": 1,
+  "proteinPer100g": 0,
+  "gramsPerMl": 1
+ }
+]
