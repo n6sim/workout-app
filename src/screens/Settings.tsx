@@ -5,6 +5,7 @@ import { clearSyncToken } from '../sync'
 import { syncManager } from '../sync/instance'
 import { formatAgo } from '../util/ago'
 import { useNow, useSyncForm, useSyncStatus } from '../useSync'
+import CreditSettings from './CreditSettings'
 import PilatesLinksSettings from './PilatesLinksSettings'
 import SyncForm from './SyncForm'
 import TrainingSettings from './TrainingSettings'
@@ -48,6 +49,7 @@ export default function Settings({ profileId, header, pilatesLinks, reload, onBa
       </div>
 
       <TrainingSettings profileId={profileId} header={header} reload={reload} />
+      <CreditSettings profileId={profileId} header={header} reload={reload} />
       <PilatesLinksSettings profileId={profileId} links={pilatesLinks} reload={reload} />
 
       <Card className="space-y-3">

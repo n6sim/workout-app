@@ -102,6 +102,23 @@ export function createStorage(db: WorkoutDB = new WorkoutDB()) {
     return full
   }
 
+  /** Adds the entries whose ids are not stored yet (soft-deleted ones count as stored), with a fixed old
+   *  timestamp so any real edit, on any device, wins when copies merge. For the starter pantry. */
+  async function seedEntries<K extends EntryTable>(
+    t: K, profileId: ProfileId, entries: (Omit<EntryMap[K], keyof EntryBase> & { id: string })[], stamp: string,
+  ): Promise<number> {
+    const have = new Set((await table(t).where('profileId').equals(profileId).primaryKeys()) as string[])
+    const device = await deviceId()
+    const fresh = entries
+      .filter((e) => !have.has(e.id))
+      .map((e) => ({ ...e, createdAt: stamp, updatedAt: stamp, deleted: false, deviceId: device, profileId }))
+    if (fresh.length) {
+      await table(t).bulkPut(fresh as never)
+      emit(profileId, 'remote') // not a user change: every device builds the same seed, so there is nothing to sync
+    }
+    return fresh.length
+  }
+
   async function listEntries<K extends EntryTable>(
     t: K, profileId: ProfileId, opts: { includeDeleted?: boolean } = {},
   ): Promise<EntryMap[K][]> {
@@ -175,7 +192,7 @@ export function createStorage(db: WorkoutDB = new WorkoutDB()) {
   }
 
   return {
-    loadHeader, saveHeader, saveEntry, listEntries, deleteEntry,
+    loadHeader, saveHeader, saveEntry, seedEntries, listEntries, deleteEntry,
     exportProfile, importProfile, applyRemote, clearProfile, getLastProfile, setLastProfile,
     onChange, getMeta, setMeta, deleteMeta, getDirty, clearDirty,
   }

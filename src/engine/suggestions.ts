@@ -12,10 +12,10 @@ export interface Remaining {
 
 /** The 3 ideas that best fit what is left today (spec: Meal suggestions).
  *  They should fit the calories left, and prefer protein when it is behind. */
-export function suggestMeals(ideas: MealIdea[], left: Remaining, proteinTarget: number, count = 3): MealIdea[] {
+export function suggestMeals<T extends MealIdea>(ideas: T[], left: Remaining, proteinTarget: number, count = 3): T[] {
   const proteinBehind = left.proteinG > proteinTarget * 0.25
   const kcalLeft = Math.max(0, left.kcal)
-  const score = (m: MealIdea) => {
+  const score = (m: T) => {
     const over = Math.max(0, m.kcal - kcalLeft)
     const under = Math.max(0, kcalLeft - m.kcal)
     const proteinUseful = Math.min(m.proteinG, Math.max(0, left.proteinG))

@@ -8,12 +8,16 @@ import Today from './screens/Today'
 import More from './screens/More'
 import Settings from './screens/Settings'
 import Week from './screens/Week'
+import LogTab from './screens/LogTab'
+import Pantry from './screens/Pantry'
+import type { LogView } from './screens/Today'
+import { ensurePantry } from './domain/pantry'
 import SyncHeader from './screens/SyncHeader'
 import TokenScreen from './screens/TokenScreen'
 import { syncManager } from './sync/instance'
 import { useSyncStatus } from './useSync'
 
-type Tab = 'today' | 'week' | 'more' | 'settings'
+type Tab = 'today' | 'week' | 'log' | 'more' | 'settings' | 'pantry'
 
 export default function App() {
   const [profileId, setProfileId] = useState<ProfileId | null>(null)
@@ -42,6 +46,7 @@ export default function App() {
 function ProfileApp({ profileId, onSwitch }: { profileId: ProfileId; onSwitch: () => void }) {
   const { data, reload } = useProfileData(profileId)
   const [tab, setTab] = useState<Tab>('today')
+  const [logView, setLogView] = useState<LogView>('meal')
   const status = useSyncStatus()
   const [tokenDismissed, setTokenDismissed] = useState(false)
 
@@ -49,6 +54,12 @@ function ProfileApp({ profileId, onSwitch }: { profileId: ProfileId; onSwitch: (
     void syncManager.start(profileId)
     return () => syncManager.stop()
   }, [profileId])
+
+  // Starter pantry (about 120 foods from the Canadian Nutrient File). Adds only what is missing.
+  const hasProfile = !!data?.header
+  useEffect(() => {
+    if (hasProfile) void ensurePantry(profileId)
+  }, [hasProfile, profileId])
 
   // Ask again the next time GitHub rejects the token.
   useEffect(() => {
@@ -64,27 +75,32 @@ function ProfileApp({ profileId, onSwitch }: { profileId: ProfileId; onSwitch: (
       <main className="flex-1 overflow-y-auto px-4 pb-24 pt-4">
         {tab === 'today' && (
           <Today
-            profileId={profileId} header={data.header} weighIns={data.weighIns} phases={data.phases}
-            sessions={data.sessions} pilatesLinks={data.pilatesLinks} reload={reload} onOpenSettings={() => setTab('settings')}
+            profileId={profileId} header={data.header} data={data} reload={reload} onOpenSettings={() => setTab('settings')}
+            onQuickLog={(v) => { setLogView(v); setTab('log') }}
           />
         )}
-        {tab === 'week' && <Week header={data.header} sessions={data.sessions} onOpenSettings={() => setTab('settings')} />}
+        {tab === 'week' && <Week profileId={profileId} header={data.header} data={data} reload={reload} onOpenSettings={() => setTab('settings')} />}
+        {tab === 'log' && <LogTab profileId={profileId} data={data} view={logView} setView={setLogView} reload={reload} onSaved={() => setTab('today')} />}
         {tab === 'more' && (
-          <More profileId={profileId} header={data.header} onSwitch={onSwitch} reload={reload} onOpenSettings={() => setTab('settings')} />
+          <More
+            profileId={profileId} header={data.header} onSwitch={onSwitch} reload={reload}
+            onOpenSettings={() => setTab('settings')} onOpenPantry={() => setTab('pantry')}
+          />
         )}
         {tab === 'settings' && (
           <Settings profileId={profileId} header={data.header} pilatesLinks={data.pilatesLinks} reload={reload} onBack={() => setTab('more')} />
         )}
+        {tab === 'pantry' && <Pantry profileId={profileId} foods={data.foods} savedMeals={data.savedMeals} reload={reload} onBack={() => setTab('more')} />}
       </main>
       <nav className="fixed inset-x-0 bottom-0 border-t border-slate-800 bg-slate-900 pb-[env(safe-area-inset-bottom)]">
         <div className="mx-auto flex max-w-md">
-          {(['today', 'week', 'more'] as const).map((t) => (
+          {(['today', 'week', 'log', 'more'] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`flex-1 py-4 text-sm font-medium capitalize ${(tab === t || (t === 'more' && tab === 'settings')) ? 'text-sky-400' : 'text-slate-400'}`}
+              className={`flex-1 py-4 text-sm font-medium capitalize ${(tab === t || (t === 'more' && (tab === 'settings' || tab === 'pantry'))) ? 'text-sky-400' : 'text-slate-400'}`}
             >
-              {t}
+              {t === 'log' ? 'Log +' : t}
             </button>
           ))}
         </div>
