@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { storage } from '../storage/instance'
 import type { Phase, PhaseType, PilatesLink, ProfileHeader, ProfileId, Session, WeighIn } from '../storage'
 import { dailyTargets } from '../engine/targets'
+import { daysBetween } from '../engine/dates'
 import { latestWeighIn } from '../useProfileData'
 import { formatDate, todayLocal } from '../util/today'
 import PlanCard from './PlanCard'
@@ -29,6 +30,7 @@ interface Props {
 export default function Today({ profileId, header, weighIns, phases, sessions, pilatesLinks, reload, onOpenSettings }: Props) {
   const today = todayLocal()
   const latest = latestWeighIn(weighIns)
+  const dayNumber = Math.max(1, daysBetween(header.goal.startDate, today) + 1)
   const phase = phases.find((p) => p.endDate === null)
   const phaseKind = phase?.type === 'fat_loss' ? 'fat_loss' : 'maintenance'
 
@@ -59,9 +61,14 @@ export default function Today({ profileId, header, weighIns, phases, sessions, p
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Today</h1>
-        {phase && (
-          <span className="rounded-full bg-sky-500/20 px-3 py-1 text-sm text-sky-300">{PHASE_LABEL[phase.type]}</span>
-        )}
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-slate-400">
+            {dayNumber === 1 ? 'Day 1 of your plan' : `Day ${dayNumber}`}
+          </span>
+          {phase && (
+            <span className="rounded-full bg-sky-500/20 px-3 py-1 text-sm text-sky-300">{PHASE_LABEL[phase.type]}</span>
+          )}
+        </div>
       </div>
 
       {targets && (

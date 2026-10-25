@@ -56,7 +56,8 @@ export default function More({ profileId, header, onSwitch, reload, onOpenSettin
 
       <Card className="space-y-3">
         <h2 className="font-semibold">Settings</h2>
-        <button className={secondaryBtn} onClick={onOpenSettings}>Sync and settings</button>
+        <p className="text-sm text-slate-400">Training days, equipment, dumbbells, pilates videos and GitHub backup.</p>
+        <button className={primaryBtn} onClick={onOpenSettings}>Open settings</button>
       </Card>
 
       <Card className="space-y-3">
