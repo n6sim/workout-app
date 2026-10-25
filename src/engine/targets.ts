@@ -1,6 +1,7 @@
 import { addDays, ageYears, daysBetween } from './dates'
 import { bmr } from './bmr'
 import { baseMaintenance } from './maintenance'
+import { MAINTENANCE_RAMP_KCAL_PER_WEEK, RECOMPOSITION_DEFICIT_KCAL } from './coach'
 import { KCAL_PER_KG_FAT, modeConfig } from './modes'
 import type { ActivityLevel, ModeName, Sex } from './types'
 
@@ -27,7 +28,7 @@ export function proteinTarget(kg: number, mode: ModeName = 'moderate'): number {
   return Math.round((kg * modeConfig(mode).proteinGPerKg) / 5) * 5
 }
 
-export type PhaseKind = 'fat_loss' | 'maintenance'
+export type PhaseKind = 'fat_loss' | 'recomposition' | 'maintenance' | 'diet_break'
 
 export interface TargetInput {
   sex: Sex
@@ -41,6 +42,12 @@ export interface TargetInput {
   targetDate?: string
   today: string
   mode?: ModeName
+  /** Adaptive maintenance (rule 8). Replaces the formula once it exists. */
+  maintenanceOverrideKcal?: number
+  /** A plateau "small adjustment": fewer kcal a day, never below the floor. Fat loss only. */
+  extraDeficitKcal?: number
+  /** Maintenance phase: calories start here and rise 100 a week until they reach maintenance. */
+  ramp?: { startKcal: number; weeksInPhase: number }
 }
 
 export interface DailyTargets {
@@ -62,7 +69,7 @@ export interface DailyTargets {
 export function dailyTargets(input: TargetInput): DailyTargets {
   const mode = input.mode ?? 'moderate'
   const bmrKcal = bmr(input.sex, input.weightKg, input.heightCm, ageYears(input.birthDate, input.today))
-  const maintenanceKcal = baseMaintenance(bmrKcal, input.activityLevel)
+  const maintenanceKcal = input.maintenanceOverrideKcal ?? baseMaintenance(bmrKcal, input.activityLevel)
 
   let needed = 0
   if (input.phase === 'fat_loss' && input.targetWeightKg !== undefined && input.targetDate) {
@@ -80,7 +87,12 @@ export function dailyTargets(input: TargetInput): DailyTargets {
   }
 
   const floor = calorieFloor(input.sex, mode)
-  const raw = maintenanceKcal - deficitKcal
+  let raw = maintenanceKcal - deficitKcal
+  if (input.phase === 'fat_loss' && input.extraDeficitKcal) raw -= input.extraDeficitKcal
+  if (input.phase === 'recomposition') raw = maintenanceKcal - RECOMPOSITION_DEFICIT_KCAL
+  if (input.phase === 'maintenance' && input.ramp) {
+    raw = Math.min(maintenanceKcal, input.ramp.startKcal + MAINTENANCE_RAMP_KCAL_PER_WEEK * input.ramp.weeksInPhase)
+  }
   const floorApplied = raw < floor
 
   return {
