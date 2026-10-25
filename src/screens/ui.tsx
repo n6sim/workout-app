@@ -8,15 +8,15 @@ export const secondaryBtn =
   'w-full rounded-xl bg-slate-800 py-3 text-base font-medium text-slate-100 active:bg-slate-700 disabled:opacity-50'
 
 /** Labelled input. Use `group` when the children are buttons, so a <label> doesn't swallow them. */
-export function Field({ label, children, group = false }: { label: string; children: ReactNode; group?: boolean }) {
+export function Field({ label, children, group = false, id }: { label: string; children: ReactNode; group?: boolean; id?: string }) {
   const text = <span className="mb-1 block text-sm text-slate-400">{label}</span>
   return group ? (
-    <div role="group" aria-label={label}>
+    <div id={id} role="group" aria-label={label}>
       {text}
       {children}
     </div>
   ) : (
-    <label className="block">
+    <label id={id} className="block">
       {text}
       {children}
     </label>
