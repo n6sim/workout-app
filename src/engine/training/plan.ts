@@ -1,6 +1,7 @@
 import { addDays, daysBetween } from '../dates'
 import type { PhaseType } from '../../storage/types'
 import { buildSessionPlan } from './session'
+import { applyPilatesRoutine } from './pilatesRoutine'
 import { pickPilatesType } from './pilates'
 import { isStrengthDay, planWeek, SUPPORTED_TRAINING_DAYS, weekdayOf, weekStart } from './week'
 import type { DayKind, Exercise, FocusArea, SessionPlan } from './types'
@@ -82,6 +83,8 @@ export function planDay(i: DayPlanInput): DayPlan {
       phase: i.phase,
       weekNumber: week,
     })
+    // Give the day something to do in the app, whether or not a video link has been added.
+    Object.assign(plan, applyPilatesRoutine(plan, plan.pilates.type, i.library))
   }
 
   return { ...base, kind, plan, warnings: focusWarnings(plan.focus, i.sessions, monday, i.date) }

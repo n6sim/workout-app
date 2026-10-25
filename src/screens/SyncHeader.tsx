@@ -12,7 +12,7 @@ export default function SyncHeader({ name, onOpenSettings }: { name: string; onO
   let label = ''
   let tone = 'text-slate-400'
   switch (status.state) {
-    case 'off': label = 'Sync off'; break
+    case 'off': label = 'Not backed up. Tap to set up'; tone = 'text-amber-300'; break
     case 'idle':
     case 'syncing': label = 'Syncing…'; break
     case 'synced':

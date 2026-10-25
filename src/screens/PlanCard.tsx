@@ -49,6 +49,7 @@ export default function PlanCard({ profileId, header, phases, sessions, pilatesL
   const todays = sessions.filter((s) => s.date === today).sort((a, b) => b.createdAt.localeCompare(a.createdAt))
   const resumable = todays.find((s) => s.status === 'partial' && (s.stepIndex ?? 0) > 0 && s.plan.kind === day.kind)
   const doneToday = todays.find((s) => s.status === 'done' && s.plan.kind === day.kind)
+  const partialToday = todays.find((s) => s.status === 'partial' && s.plan.kind === day.kind)
   const others = sessions.filter((s) => s.date !== today)
 
   async function begin(plan: SessionPlan) {
@@ -116,6 +117,7 @@ export default function PlanCard({ profileId, header, phases, sessions, pilatesL
   // ----- pilates days -----
   if (plan.pilates) {
     const link = pilatesLinks.find((l) => l.type === plan.pilates!.type && l.url)
+    const hasRoutine = plan.exercises.length > 0
     return (
       <Card className="space-y-3">
         <div className="flex items-baseline justify-between">
@@ -124,9 +126,29 @@ export default function PlanCard({ profileId, header, phases, sessions, pilatesL
         </div>
         <p className="text-lg font-medium text-sky-300">{PILATES_LABEL[plan.pilates.type]}</p>
         <p className="text-sm text-slate-300">{plan.pilates.reason}</p>
+
+        {plan.cardio && (
+          <p className="text-sm text-slate-300">Starts with {Math.round(plan.cardio.seconds / 60)} min steady cardio ({plan.cardio.name}).</p>
+        )}
+        {hasRoutine && (
+          <ul className="space-y-1 text-sm">
+            {plan.exercises.map((e) => (
+              <li key={e.exerciseId} className="flex justify-between gap-3">
+                <span>{e.name}</span>
+                <span className="shrink-0 text-slate-400">{e.sets} x {e.mode === 'timed' ? `${e.seconds}s` : `${e.repMin}-${e.repMax}`}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+        {(hasRoutine || plan.cardio) && (
+          <button className={doneToday ? secondaryBtn : primaryBtn} onClick={() => void begin(plan)}>
+            {doneToday ? 'Do it again' : 'Start session'}
+          </button>
+        )}
+
         {link ? (
           <a className={`${secondaryBtn} block text-center`} href={link.url} target="_blank" rel="noreferrer">
-            Open video: {link.title || 'MadFit'}
+            Or follow the video: {link.title || 'MadFit'}
           </a>
         ) : (
           <div className="rounded-xl bg-slate-900 p-3 text-sm text-slate-300">
@@ -134,16 +156,13 @@ export default function PlanCard({ profileId, header, phases, sessions, pilatesL
             <button className="mt-2 block underline" onClick={onOpenSettings}>Open settings</button>
           </div>
         )}
-        {plan.cardio && (
-          <p className="text-sm text-slate-300">Then steady cardio: {Math.round(plan.cardio.seconds / 60)} min, {plan.cardio.name}.</p>
-        )}
-        {plan.cardio && (
-          <button className={secondaryBtn} onClick={() => void begin({ ...plan, title: 'Steady cardio' })}>Start steady cardio</button>
-        )}
         {doneToday ? (
           <p className="text-sm text-emerald-400">Done today.</p>
         ) : (
-          <button className={primaryBtn} onClick={() => void markDone(plan)}>Mark pilates done</button>
+          <>
+            {partialToday && <p className="text-sm text-amber-300">Partly done today. You can do it again or mark it done.</p>}
+            <button className={secondaryBtn} onClick={() => void markDone(plan)}>I did the video instead, mark done</button>
+          </>
         )}
       </Card>
     )
