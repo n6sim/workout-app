@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { storage } from './storage/instance'
-import type { Phase, PilatesLink, ProfileHeader, ProfileId, Session, WeighIn } from './storage'
+import type { Activity, CoachEvent, Food, Meal, Pause, Phase, PilatesLink, ProfileHeader, ProfileId, SavedMeal, Session, WeighIn } from './storage'
 
 export interface ProfileData {
   header: ProfileHeader | null
@@ -8,6 +8,12 @@ export interface ProfileData {
   phases: Phase[]
   sessions: Session[]
   pilatesLinks: PilatesLink[]
+  meals: Meal[]
+  activities: Activity[]
+  foods: Food[]
+  savedMeals: SavedMeal[]
+  events: CoachEvent[]
+  pauses: Pause[]
 }
 
 /** Loads one profile from storage. `reload` refreshes after a write. */
@@ -15,14 +21,20 @@ export function useProfileData(profileId: ProfileId) {
   const [data, setData] = useState<ProfileData | null>(null)
 
   const reload = useCallback(async () => {
-    const [header, weighIns, phases, sessions, pilatesLinks] = await Promise.all([
+    const [header, weighIns, phases, sessions, pilatesLinks, meals, activities, foods, savedMeals, events, pauses] = await Promise.all([
       storage.loadHeader(profileId),
       storage.listEntries('weighIns', profileId),
       storage.listEntries('phases', profileId),
       storage.listEntries('sessions', profileId),
       storage.listEntries('pilatesLinks', profileId),
+      storage.listEntries('meals', profileId),
+      storage.listEntries('activities', profileId),
+      storage.listEntries('foods', profileId),
+      storage.listEntries('savedMeals', profileId),
+      storage.listEntries('events', profileId, { includeDeleted: true }),
+      storage.listEntries('pauses', profileId),
     ])
-    setData({ header, weighIns, phases, sessions, pilatesLinks })
+    setData({ header, weighIns, phases, sessions, pilatesLinks, meals, activities, foods, savedMeals, events, pauses })
   }, [profileId])
 
   useEffect(() => {
@@ -39,7 +51,4 @@ export function useProfileData(profileId: ProfileId) {
   return { data, reload }
 }
 
-/** Latest weigh-in by date, then by creation time. */
-export function latestWeighIn(weighIns: WeighIn[]): WeighIn | undefined {
-  return [...weighIns].sort((a, b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt))[0]
-}
+export { latestWeighIn } from './domain/todayInfo'

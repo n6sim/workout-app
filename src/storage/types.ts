@@ -58,6 +58,10 @@ export interface Phase extends EntryBase {
   reason: string
   calorieTargetKcal: number
   proteinTargetG: number
+  /** Diet break: the day it is due to end. */
+  plannedEndDate?: string
+  /** Diet break: the phase to go back to. */
+  previousType?: PhaseType
 }
 
 export interface WeighIn extends EntryBase {
@@ -68,6 +72,8 @@ export interface WeighIn extends EntryBase {
 // The shapes below are not used until later milestones; they exist so the data model matches the spec.
 
 export interface MealItem {
+  /** Readable copy of the food name, so old meals still make sense if the food is edited or removed. */
+  name?: string
   foodId: string
   qty: number
   unit: string
@@ -84,6 +90,8 @@ export interface Meal extends EntryBase {
 
 export interface Activity extends EntryBase {
   date: string
+  /** Set when an in-app workout created this entry, so finishing it again does not count it twice. */
+  sessionId?: string
   type: string
   minutes: number
   estKcal: number
@@ -109,7 +117,7 @@ export interface Pause extends EntryBase {
   note: string
 }
 
-/** Nutrition values are entered by the user or generated from the Canadian Nutrient File. Never invented. */
+/** Nutrition values come from the Canadian Nutrient File (seed foods) or from a label the user typed in. Never invented. */
 export interface Food extends EntryBase {
   name: string
   aliases: string[]
@@ -118,6 +126,11 @@ export interface Food extends EntryBase {
   kcalPerPiece?: number
   proteinPerPiece?: number
   gramsPerPiece?: number
+  gramsPerSlice?: number
+  /** Grams in 1 ml. Gives ml, l, tsp, tbsp and cup. */
+  gramsPerMl?: number
+  source?: 'cnf' | 'user'
+  cnfFoodId?: number
 }
 
 export interface SavedMeal extends EntryBase {

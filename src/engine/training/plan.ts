@@ -22,6 +22,7 @@ export interface DayPlanInput {
   library: Exercise[]
   sessions: SessionSummary[]
   focusOverride?: FocusArea[]
+  fewerSets?: boolean
 }
 
 export interface DayPlan {
@@ -64,7 +65,7 @@ export function planDay(i: DayPlanInput): DayPlan {
   const week = weekNumber(monday)
   const plan = buildSessionPlan({
     kind, phase: i.phase, library: i.library, sessionLengthMin: i.sessionLengthMin,
-    seed: `${monday}:${kind}`, weekNumber: week, focus: isStrengthDay(kind) ? i.focusOverride : undefined,
+    seed: `${monday}:${kind}`, weekNumber: week, focus: isStrengthDay(kind) ? i.focusOverride : undefined, fewerSets: i.fewerSets,
   })
 
   if (isStrengthDay(kind) && plan.exercises.length === 0) return { ...base, kind, plan, problem: 'no_exercises' }

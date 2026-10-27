@@ -32,6 +32,8 @@ export interface BuildInput {
   seed: string
   weekNumber: number
   focus?: FocusArea[]
+  /** The first week back from a long break, or the first session after being sick: one set fewer per exercise. */
+  fewerSets?: boolean
 }
 
 const byId = (lib: Exercise[], id: string) => lib.find((e) => e.id === id)
@@ -144,8 +146,9 @@ export function buildSessionPlan(i: BuildInput): SessionPlan {
       const exercises = buildStrengthExercises(
         i.library, focus, i.phase, exerciseCount(i.sessionLengthMin, focus.length), i.seed,
       )
+      const lighter = i.fewerSets ? exercises.map((e) => ({ ...e, sets: Math.max(1, e.sets - 1) })) : exercises
       const base = {
-        ...empty, focus, exercises,
+        ...empty, focus, exercises: lighter,
         warmup: warmupFor(i.library), finisher: finisherFor(i.library, i.seed),
         cooldown: cooldownFor(i.library, focus, i.seed),
       }

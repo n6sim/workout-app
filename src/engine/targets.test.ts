@@ -112,3 +112,37 @@ describe('dailyTargets', () => {
     expect(t.calorieTargetKcal).toBe(1880) // 1878.825
   })
 })
+
+describe('phases and adjustments (M5)', () => {
+  it('recomposition is maintenance minus 250', () => {
+    const t = dailyTargets({ ...base, phase: 'recomposition' })
+    expect(t.calorieTargetKcal).toBe(Math.round((1878.825 - 250) / 10) * 10) // 1630
+  })
+  it('a diet break eats at maintenance', () => {
+    expect(dailyTargets({ ...base, phase: 'diet_break' }).calorieTargetKcal).toBe(1880)
+  })
+  it('adaptive maintenance replaces the formula', () => {
+    const t = dailyTargets({ ...base, phase: 'maintenance', maintenanceOverrideKcal: 2100 })
+    expect(t.maintenanceKcal).toBe(2100)
+    expect(t.calorieTargetKcal).toBe(2100)
+    expect(dailyTargets({ ...base, maintenanceOverrideKcal: 2100 }).calorieTargetKcal).toBe(1720) // 2100 - 385 = 1715, rounded to the nearest 10
+  })
+  it('a plateau adjustment lowers fat loss by 100 to 150, but never below the floor', () => {
+    expect(dailyTargets({ ...base, extraDeficitKcal: 100 }).calorieTargetKcal).toBe(1390)
+    expect(dailyTargets({ ...base, extraDeficitKcal: 150 }).calorieTargetKcal).toBe(1340)
+    const low = dailyTargets({ ...base, maintenanceOverrideKcal: 1500, extraDeficitKcal: 150 })
+    expect(low.calorieTargetKcal).toBe(1200)
+    expect(low.floorApplied).toBe(true)
+  })
+  it('maintenance after a goal: calories rise 100 a week until they reach maintenance', () => {
+    const ramp = (weeksInPhase: number) => dailyTargets({ ...base, phase: 'maintenance', ramp: { startKcal: 1630, weeksInPhase } }).calorieTargetKcal
+    expect(ramp(0)).toBe(1630)
+    expect(ramp(1)).toBe(1730)
+    expect(ramp(2)).toBe(1830)
+    expect(ramp(3)).toBe(1880) // capped at maintenance 1878.8
+    expect(ramp(9)).toBe(1880)
+  })
+  it('protein follows the weight given (trend weight)', () => {
+    expect(dailyTargets({ ...base, weightKg: 70 }).proteinTargetG).toBe(125)
+  })
+})

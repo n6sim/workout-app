@@ -10,9 +10,10 @@ interface Props {
   onSwitch: () => void
   reload: () => void
   onOpenSettings: () => void
+  onOpenPantry: () => void
 }
 
-export default function More({ profileId, header, onSwitch, reload, onOpenSettings }: Props) {
+export default function More({ profileId, header, onSwitch, reload, onOpenSettings, onOpenPantry }: Props) {
   const fileRef = useRef<HTMLInputElement>(null)
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null)
   const [persisted, setPersisted] = useState<boolean | null>(null)
@@ -52,6 +53,12 @@ export default function More({ profileId, header, onSwitch, reload, onOpenSettin
         <p className="text-sm text-slate-400">Profile</p>
         <p className="text-lg font-semibold">{header.profile.name}</p>
         <button className={secondaryBtn} onClick={onSwitch}>Switch profile</button>
+      </Card>
+
+      <Card className="space-y-3">
+        <h2 className="font-semibold">My pantry</h2>
+        <p className="text-sm text-slate-400">Foods, calories and saved meals.</p>
+        <button className={secondaryBtn} onClick={onOpenPantry}>Open pantry</button>
       </Card>
 
       <Card className="space-y-3">

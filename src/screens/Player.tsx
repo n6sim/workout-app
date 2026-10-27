@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { storage } from '../storage/instance'
-import type { ProfileId, Session, Settings } from '../storage'
+import type { Activity, ProfileId, Session, Settings } from '../storage'
+import { recordWorkoutActivities } from '../domain/day'
 import { LIBRARY, ownedLibrary } from '../data/library'
 import { applySwap, swapCandidates } from '../engine/training/session'
 import { expandSteps, nextBlockIndex, type Step } from '../engine/training/steps'
@@ -20,6 +21,10 @@ interface Props {
   /** Earlier sessions, for weight suggestions. */
   history: Session[]
   settings: Settings
+  weightKg: number
+  creditPct: number
+  /** Existing activity entries, so a redone workout replaces its own and never counts twice. */
+  activities: Activity[]
   onExit: () => void
 }
 
@@ -29,7 +34,7 @@ interface Countdown {
   total: number
 }
 
-export default function Player({ profileId, session: initial, history, settings, onExit }: Props) {
+export default function Player({ profileId, session: initial, history, settings, weightKg, creditPct, activities, onExit }: Props) {
   const sessionRef = useRef<Session>(initial)
   const [plan, setPlan] = useState(initial.plan)
   const [sets, setSets] = useState<SetRecord[]>(initial.sets)
@@ -97,9 +102,13 @@ export default function Player({ profileId, session: initial, history, settings,
         : reachedEnd ? 'done' : 'skipped'
     setFinalStatus(status)
     await persist({ status, finishedAt: new Date().toISOString(), stepIndex: steps.length, sets: logged, plan })
+    // The workout becomes calories: real time spent, but never more than 1.5x the plan (the app left open does not count).
+    const started = sessionRef.current.startedAt ? Date.parse(sessionRef.current.startedAt) : Date.now()
+    const minutes = Math.max(1, Math.min((Date.now() - started) / 60000, plan.estMinutes * 1.5))
+    await recordWorkoutActivities(profileId, sessionRef.current, status === 'skipped' ? 0 : minutes, weightKg, creditPct, activities)
     setPhase('summary')
     void wakeLock.current?.release()
-  }, [persist, plan, steps.length, totalSetSteps])
+  }, [persist, plan, steps.length, totalSetSteps, profileId, weightKg, creditPct, activities])
 
   const goTo = useCallback((next: number, logged: SetRecord[]) => {
     if (next >= steps.length) return void finish(true, logged)

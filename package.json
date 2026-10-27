@@ -10,7 +10,8 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "icons": "node scripts/make-icons.mjs",
-    "import-exercises": "node scripts/import-exercises.mjs"
+    "import-exercises": "node scripts/import-exercises.mjs",
+    "build-seed-foods": "node scripts/build-seed-foods.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.7",

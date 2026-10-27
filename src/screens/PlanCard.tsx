@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { storage } from '../storage/instance'
-import type { Phase, PilatesLink, ProfileHeader, ProfileId, Session } from '../storage'
+import type { Activity, Phase, PilatesLink, ProfileHeader, ProfileId, Session } from '../storage'
+import { workoutBurn } from '../engine/exercise'
 import { LIBRARY, ownedLibrary } from '../data/library'
 import { planDay, type SessionSummary } from '../engine/training/plan'
 import { FOCUS_LABEL } from '../engine/training/focus'
@@ -16,6 +17,9 @@ interface Props {
   phases: Phase[]
   sessions: Session[]
   pilatesLinks: PilatesLink[]
+  activities: Activity[]
+  weightKg: number | null
+  fewerSets?: boolean
   today: string
   reload: () => void
   onOpenSettings: () => void
@@ -23,7 +27,7 @@ interface Props {
 
 const summary = (s: Session): SessionSummary => ({ date: s.date, status: s.status, plan: { focus: s.plan.focus, kind: s.plan.kind } })
 
-export default function PlanCard({ profileId, header, phases, sessions, pilatesLinks, today, reload, onOpenSettings }: Props) {
+export default function PlanCard({ profileId, header, phases, sessions, pilatesLinks, activities, weightKg, fewerSets, today, reload, onOpenSettings }: Props) {
   const { settings } = header
   const phase = phases.find((p) => p.endDate === null)?.type ?? 'fat_loss'
   const focusKey = `focus:${profileId}:${today}`
@@ -41,9 +45,9 @@ export default function PlanCard({ profileId, header, phases, sessions, pilatesL
   const day = useMemo(
     () => planDay({
       date: today, trainingDays: settings.trainingDays, phase, sessionLengthMin: settings.sessionLengthMin,
-      library, sessions: summaries, focusOverride,
+      library, sessions: summaries, focusOverride, fewerSets,
     }),
-    [today, settings.trainingDays, settings.sessionLengthMin, phase, library, summaries, focusOverride],
+    [today, settings.trainingDays, settings.sessionLengthMin, phase, library, summaries, focusOverride, fewerSets],
   )
 
   const todays = sessions.filter((s) => s.date === today).sort((a, b) => b.createdAt.localeCompare(a.createdAt))
@@ -79,6 +83,7 @@ export default function PlanCard({ profileId, header, phases, sessions, pilatesL
     return (
       <Player
         profileId={profileId} session={playing} history={others} settings={settings}
+        weightKg={weightKg ?? 70} creditPct={settings.exerciseCreditPct} activities={activities}
         onExit={() => { setPlaying(null); reload() }}
       />
     )
@@ -104,6 +109,8 @@ export default function PlanCard({ profileId, header, phases, sessions, pilatesL
   }
 
   const plan = day.plan!
+  const burn = weightKg ? workoutBurn(plan, weightKg, settings.exerciseCreditPct) : null
+  const burnLine = burn && burn.estKcal > 0 ? <p className="text-sm text-slate-400">Burned ~{burn.estKcal}, counted {burn.creditedKcal}</p> : null
   if (day.problem === 'no_exercises') {
     return (
       <Card className="space-y-3">
@@ -126,6 +133,7 @@ export default function PlanCard({ profileId, header, phases, sessions, pilatesL
         </div>
         <p className="text-lg font-medium text-sky-300">{PILATES_LABEL[plan.pilates.type]}</p>
         <p className="text-sm text-slate-300">{plan.pilates.reason}</p>
+        {burnLine}
 
         {plan.cardio && (
           <p className="text-sm text-slate-300">Starts with {Math.round(plan.cardio.seconds / 60)} min steady cardio ({plan.cardio.name}).</p>
@@ -140,11 +148,16 @@ export default function PlanCard({ profileId, header, phases, sessions, pilatesL
             ))}
           </ul>
         )}
-        {(hasRoutine || plan.cardio) && (
+        {(hasRoutine || plan.cardio) && (resumable ? (
+          <>
+            <button className={primaryBtn} onClick={() => setPlaying(resumable)}>Resume session</button>
+            <button className={secondaryBtn} onClick={() => void begin(plan)}>Start over</button>
+          </>
+        ) : (
           <button className={doneToday ? secondaryBtn : primaryBtn} onClick={() => void begin(plan)}>
             {doneToday ? 'Do it again' : 'Start session'}
           </button>
-        )}
+        ))}
 
         {link ? (
           <a className={`${secondaryBtn} block text-center`} href={link.url} target="_blank" rel="noreferrer">
@@ -177,6 +190,8 @@ export default function PlanCard({ profileId, header, phases, sessions, pilatesL
         <span className="text-sm text-slate-400">about {plan.estMinutes} min</span>
       </div>
 
+      {burnLine}
+      {fewerSets && strength && <p className="rounded-lg bg-emerald-900/40 p-2 text-xs text-emerald-100">A lighter session while you ease back in: one set fewer on each exercise.</p>}
       {strength && (
         <>
           <div className="flex flex-wrap items-center gap-2">
